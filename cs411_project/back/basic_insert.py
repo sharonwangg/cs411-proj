@@ -11,7 +11,7 @@ import flask
 def login(username,password):
 	connection = pymysql.connect(host='localhost',
 	                             user='root',
-	                             password='admin',
+	                             password='cs411',
 	                             db='book_club')
 	try: 
 		with connection.cursor() as cur:
@@ -34,7 +34,7 @@ def login(username,password):
 def create_user(username,password,email,age):
 	connection = pymysql.connect(host='localhost',
 	                             user='root',
-	                             password='admin',
+	                             password='cs411',
 	                             db='book_club')
 
 	try:
@@ -55,7 +55,7 @@ def create_user(username,password,email,age):
 def create_post(username,text,date,book_id):
 	connection = pymysql.connect(host='localhost',
 	                             user='root',
-	                             password='admin',
+	                             password='cs411',
 	                             db='book_club')
 
 	try:
@@ -70,7 +70,7 @@ def create_post(username,text,date,book_id):
 def delete(value):
 	connection = pymysql.connect(host='localhost',
 	                             user='root',
-	                             password='admin',
+	                             password='cs411',
 	                             db='book_club')
 
 	try:
@@ -87,7 +87,7 @@ def delete(value):
 def search(value):
 	connection = pymysql.connect(host='localhost',
 	                             user='root',
-	                             password='admin',
+	                             password='cs411',
 	                             db='book_club')
 
 
@@ -132,18 +132,18 @@ def edit(post_id,value):
 
 
 app = flask.Flask("__main__")
-@app.route("/")
+@app.route('/')
 def my_index():
 	#create_user('superman','super123','superman@gmail.com','20')
-	login('superman','saf')
+	# login('superman','saf')
 	#print('--user Created---')
 	#create_post('batman','adgs','2020-01-01','12')
 	#print('---inserted---')
 	#delete(5)
 	#print('---delted=---')
-	search('batman')
-	print('---search result above----')
+	# search('batman')
+	# print('---search result above----')
 	#edit(6,'batman')
-	return flask.render_template("index.html", token = "hello")
+	return flask.render_template("index.html")
 
 app.run(debug = True)
