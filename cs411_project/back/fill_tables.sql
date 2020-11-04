@@ -6,22 +6,27 @@ insert into login values('robin','robin123','robin@gmail.com','34');
 insert into user values('batman');
 insert into user values('robin');
 
-insert into books values(12, 'Harper Lee', 'To Kill a Mockingbird', 'fiction');
-insert into books values(31, 'J. R. R. Tolkien', 'The Lord of the Rings', 'fantasy');
-insert into books values(43, 'Paulo Coelho', 'The Alchemist', 'fantasy');
-insert into books values(52, 'J. K Rowling', "Harry Potter and the Philosopher's Stone", 'fantasty');
-insert into books values(53, 'J. K Rowling', "Harry Potter and the Chamber of Secrets", 'fantasty');
-insert into books values(54, 'J. K Rowling', "Harry Potter and the Prisoner of Azkaban", 'fantasty');
-insert into books values(55, 'J. K Rowling', "Harry Potter and the Goblet of Fire", 'fantasty');
-insert into books values(56, 'J. K Rowling', "Harry Potter and the Order of the Phoenix", 'fantasty');
-insert into books values(57, 'J. K Rowling', "Harry Potter and the Half-Blood Prince", 'fantasty');
-insert into books values(58, 'J. K Rowling', "Harry Potter and the Deathly Hallows", 'fantasty');
+insert into books values(128, 'Harper Lee', 'To Kill a Mockingbird', 'fiction');
+insert into books values(129, 'J. R. R. Tolkien', 'The Lord of the Rings', 'fantasy');
+insert into books values(130, 'Paulo Coelho', 'The Alchemist', 'fantasy');
+insert into books values(131, 'J. K Rowling', "Harry Potter and the Philosopher's Stone", 'fantasty');
+insert into books values(132, 'J. K Rowling', "Harry Potter and the Chamber of Secrets", 'fantasty');
+insert into books values(133, 'J. K Rowling', "Harry Potter and the Prisoner of Azkaban", 'fantasty');
+insert into books values(134, 'J. K Rowling', "Harry Potter and the Goblet of Fire", 'fantasty');
+insert into books values(135, 'J. K Rowling', "Harry Potter and the Order of the Phoenix", 'fantasty');
+insert into books values(136, 'J. K Rowling', "Harry Potter and the Half-Blood Prince", 'fantasty');
+insert into books values(137, 'J. K Rowling', "Harry Potter and the Deathly Hallows", 'fantasty');
 
-insert into post (username, text1, book_id) values ('batman', 'Boo Radley is my favorite character', 12);
+insert into post (username, text1, book_id) values ('batman', 'Boo Radley is my favorite character', 128);
 insert into post (username, text1, book_id) values ('robin', 'I enjoyed chapter 7', 12);
 insert into post (username, text1, book_id) values ('batman',  'I liked the use of metaphor in chapter 8', 12);
 insert into post (username, text1, book_id) values ('batman', 'There was too much imagery in chapter 2', 12);
 insert into post (username, text1, book_id) values ('robin', 'I disliked chapter 5', 12);
+insert into post (username, text1, book_id) values ('batman', 'I was shocked by Cedrics death', 134);
+insert into post (username, text1, book_id) values ('robin', 'This was a very insightful book', 130);
+insert into post (username, text1, book_id) values ('batman',  'Gandalf is my favorite character', 129);
+insert into post (username, text1, book_id) values ('batman', 'I prefer the book to the movie', 130);
+insert into post (username, text1, book_id) values ('robin', 'My favorite character is Legolas', 129);
 
 #complex queries for demo
 use book_club;
