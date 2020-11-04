@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Home Page</h2>
+<p>Welcome back, {{ username }}!</p>
+<body>
+<div class="content">
+
+    <h4 style="text-align: center">Post!</h4>
+
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Post</th>
+            <th>dateTime</th>
+        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task[0] }}</td>
+                <td>{{ task[1] }}</td>
+                <td>{{ task[2] }}</td>
+
+                
+                <td>
+                    <a href="/delete/{{task[3]}}">Delete</a>
+                    <br>
+                    <a href="/update/{{task[3]}}">Update</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    <div class="form">
+        <form action="/" method="POST">
+            <input type="text" name="content" id="content">
+            <input type="submit" value="Add Task">
+        </form>
+    </div>
+</div>
+
+
+        <form method="post" action="/search" 
+         style="margin:auto;max-width:600px">
+            <input type="text" placeholder="Search Posts" name="book">
+            <button type="submit"><i class="fa fa-search"></i>
+            </button>
+        </form>
+        <p></p>
+        <center>
+        {% for data in tas %}
+            <tr>
+                <td> {{data[1]}} by {{data[0]}} on {{data[2]}} </td>
+                </br>
+            </tr>
+        {% endfor %}
+        </center>
+    </body>
+{% endblock %}
