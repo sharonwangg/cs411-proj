@@ -6,7 +6,7 @@ import pymysql.cursors
 import json
 import hashlib 
 import flask
-
+from flask import request
 
 def login(username,password):
 	connection = pymysql.connect(host='localhost',
@@ -131,19 +131,21 @@ def edit(post_id,value):
 
 
 
-app = flask.Flask("__main__")
+app = flask.Flask("__main__", template_folder= 'templates/')
 @app.route('/')
-def my_index():
-	#create_user('superman','super123','superman@gmail.com','20')
-	# login('superman','saf')
-	#print('--user Created---')
-	#create_post('batman','adgs','2020-01-01','12')
-	#print('---inserted---')
-	#delete(5)
-	#print('---delted=---')
-	# search('batman')
-	# print('---search result above----')
-	#edit(6,'batman')
+def index():
+	return flask.render_template("index.html")
+
+@app.route('/login', methods = ['GET', 'POST'])
+def loginpage():
+	if request.method == 'POST':
+		username = request.form['username']
+		email = request.form['email']
+		age = request.form['age']
+		password = request.form['password']
+		create_user(username, password,email,age)
+		print(username, email, age, password)
+		return flask.render_template("index.html")
 	return flask.render_template("index.html")
 
 app.run(debug = True)

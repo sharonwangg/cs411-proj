@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import reactDOM, { render } from "react-dom";
+import { render } from "react-dom";
+
 
 export default class Login extends Component {
     
@@ -84,7 +85,28 @@ class LoginBox extends Component{
 class RegisterBox extends Component{
     constructor(props){
         super(props);
-        this.state= {};
+        this.state= {
+            username: "",
+            email: "",
+            age: "",
+            password: "",
+        };
+    }
+
+    onUsernameChange(e){
+        this.setState({username: e.target.value});
+    }
+
+    onEmailChange(e){
+        this.setState({email: e.target.value});
+    }
+
+    onAgeChange(e){
+        this.setState({age: e.target.value});
+    }
+    
+    onPasswordChange(e){
+        this.setState({password: e.target.value});
     }
 
     submitRegister(e){
@@ -96,47 +118,46 @@ class RegisterBox extends Component{
             <div className= "header">
                 Register
             </div>
-            <div className = "box">
+            <form actiom = "/" methods = "POST">
 
-                <div className = 'input-group'>
+                <div className = 'form-group'>
                     <label htmlFor = "username">
                         Username
                     </label>
-                    <input type = "text" name =  "username" className = "login-input" placeholder = "Username">
+                    <input type = "text" name =  "username" className = "login-input" placeholder = "Username" onChange = {this.onUsernameChange.bind(this)}>
                     </input>
                 </div>
 
-                <div className = 'input-group'>
+                <div className = 'form-group'>
                     <label htmlFor = "email">
                         E-mail
                     </label>
-                    <input type = "text" name =  "email" className = "login-input" placeholder = "Email">
+                    <input type = "text" name =  "email" className = "login-input" placeholder = "Email" onChange = {this.onEmailChange.bind(this)}>
                     </input>
                 </div>
 
-                <div className = 'input-group'>
+                <div className = 'form-group'>
                     <label htmlFor = "age">
                         Age
                     </label>
-                    <input type = "text" name =  "age" className = "login-input" placeholder = "Age">
+                    <input type = "text" name =  "age" className = "login-input" placeholder = "Age" onChange = {this.onAgeChange.bind(this)}>
                     </input>
                 </div>
 
-                <div className = 'input-group'>
+                <div className = 'form-group'>
                     <label htmlFor = "password">
                         Password
                     </label>
-                    <input type = "password" name =  "password" className = "login-input" placeholder = "Password">
+                    <input type = "password" name =  "password" className = "login-input" placeholder = "Password" onChange = {this.onPasswordChange.bind(this)}>
                     </input>
                 </div>
 
                 <button type = "button" className = "login-btn" onClick = {this.submitRegister.bind(this)}>
                     Register
                 </button>
-            </div>
+            </form>
         </div> 
     );  
     }
 }
 
-reactDOM.render(<Login />, document.getElementById("root"));
