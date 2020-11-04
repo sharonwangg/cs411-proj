@@ -8,8 +8,7 @@ import hashlib
 import flask
 from flask import Flask, render_template, request,url_for, redirect,session
 import pymysql.cursors
-from datetime import datetime
-
+from datetime import date
 
 app = Flask(__name__)
 
@@ -174,6 +173,26 @@ def edit(post_id,value):
         connection.close()
 
 
+def can_delete(id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='admin',
+                                 db='book_club')
+    returni=''
+    try: 
+
+        with connection.cursor() as cur:
+
+                
+            cur.execute('Select username from post where post_id=%s', str(id)) 
+            rows = cur.fetchone()
+            returni=rows[0]
+    finally:
+        connection.close()
+        return True if(returni==session['username']) else False
+
+
+
 
 
 
@@ -210,7 +229,8 @@ def index():
     if request.method == 'POST':
         task_content = request.form['content']
         try:
-            create_post(session['username'],task_content,datetime.now(),'12')
+            print(date.today())
+            create_post(session['username'],task_content,date.today(),'12')
             #val=show_post()
             return redirect('/home')
         except:
@@ -224,6 +244,10 @@ def index():
 
 @app.route('/delete/<int:id>')
 def delete(id):
+    print(session['username'])
+    print(can_delete(id))
+    if(not can_delete(id)):
+        return redirect('/')
     try:
         delete_record(str(id))
         return redirect('/')
@@ -233,6 +257,11 @@ def delete(id):
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
+    print(session['username'])
+    print(can_delete(id))
+    if(not can_delete(id)):
+        return redirect('/')
+
     value=edit_helper(id)
     if request.method == 'POST':
         val= request.form['content']
