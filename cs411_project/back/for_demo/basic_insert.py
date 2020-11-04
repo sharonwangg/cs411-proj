@@ -8,6 +8,7 @@ import hashlib
 import flask
 from flask import Flask, render_template, request,url_for, redirect,session
 import pymysql.cursors
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -209,7 +210,7 @@ def index():
     if request.method == 'POST':
         task_content = request.form['content']
         try:
-            create_post('batman',task_content,'2020-10-10','12')
+            create_post(session['username'],task_content,datetime.now(),'12')
             #val=show_post()
             return redirect('/home')
         except:
