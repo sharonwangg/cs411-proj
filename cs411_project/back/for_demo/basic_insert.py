@@ -45,7 +45,7 @@ def show_post():
         with connection.cursor() as cur:
 
                 
-            cur.execute('Select username, text1,dateTime,post_id from post') 
+            cur.execute('Select username, text1,dateTime,post_id from post order by dateTime desc') 
             rows = cur.fetchall()
             returni=rows
     finally:
@@ -125,7 +125,7 @@ def search_me(value):
         with connection.cursor() as cur:
 
                 
-            cur.execute('Select username, text1,dateTime from post where text1 like %s or username like %s', ("%" + value + "%","%" + value + "%")) 
+            cur.execute('Select username, text1,dateTime from post where text1 like %s or username like %s order by dateTime', ("%" + value + "%","%" + value + "%")) 
             rows = cur.fetchall()
             returni=rows
 
@@ -287,7 +287,8 @@ def login():
             session['loggedin'] = True
             session['id'] = 1
             session['username'] = account[0]
-            return render_template('home.html')
+            val = show_post()
+            return render_template('home.html',tasks=val, usr = session['username'])
         else:
             msg = 'Incorrect username/password!'
     return render_template('login.html', msg=msg)
@@ -326,7 +327,7 @@ def register():
 def home():
     if 'loggedin' in session:
         val=show_post()
-        return render_template('home.html', username=session['username'],tasks=val)
+        return render_template('home.html', usr=session['username'],tasks=val)
     return redirect(url_for('login'))
 
 
@@ -347,9 +348,9 @@ def search():
         if len(returns) == 0:
             return render_template('home.html', msg='No such posts')
         else:
-            return render_template('home.html',msg='These are the records',tas=returns)
+            return render_template('home.html',msg='These are the records',task=returns, usr = session['username'])
 
-    return render_template('home.html')
+    #return render_template('home.html')
 
 
 
