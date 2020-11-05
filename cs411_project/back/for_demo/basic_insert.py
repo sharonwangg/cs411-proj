@@ -17,7 +17,7 @@ app.secret_key = 'Team105'
 def log_me_in(username,password):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='admin',
+                                 password='cs411',
                                  db='book_club')
 
     returni=[]
@@ -35,7 +35,7 @@ def log_me_in(username,password):
 def show_post():
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='admin',
+                                 password='cs411',
                                  db='book_club')
 
     returni=[]
@@ -57,7 +57,7 @@ def show_post():
 def create_user(username,password,email,age):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='admin',
+                                 password='cs411',
                                  db='book_club')
 
     value=''
@@ -83,7 +83,7 @@ def create_user(username,password,email,age):
 def create_post(username,text,date,book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='admin',
+                                 password='cs411',
                                  db='book_club')
 
     try:
@@ -98,7 +98,7 @@ def create_post(username,text,date,book_id):
 def delete_record(value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='admin',
+                                 password='cs411',
                                  db='book_club')
     print('a')
 
@@ -117,7 +117,7 @@ def delete_record(value):
 def search_me(value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='admin',
+                                 password='cs411',
                                  db='book_club')
     returni=[]
     try: 
@@ -139,7 +139,7 @@ def search_me(value):
 def edit_helper(post_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='admin',
+                                 password='cs411',
                                  db='book_club')
 
     returni=[]
@@ -161,7 +161,7 @@ def edit_helper(post_id):
 def edit(post_id,value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='admin',
+                                 password='cs411',
                                  db='book_club')
 
     try:
@@ -176,7 +176,7 @@ def edit(post_id,value):
 def can_delete(id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='admin',
+                                 password='cs411',
                                  db='book_club')
     returni=''
     try: 
@@ -199,7 +199,7 @@ def can_delete(id):
 def show_user(username):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='admin',
+                                 password='cs411',
                                  db='book_club')
 
     returni=[]
@@ -238,8 +238,7 @@ def index():
 
 
     else:
-        values=show_post()
-        return render_template('home.html', tasks=values)
+        return redirect('/home')
 
 
 @app.route('/delete/<int:id>')
@@ -247,10 +246,10 @@ def delete(id):
     print(session['username'])
     print(can_delete(id))
     if(not can_delete(id)):
-        return redirect('/')
+        return redirect('/home')
     try:
         delete_record(str(id))
-        return redirect('/')
+        return redirect('/home')
     except:
         return 'There was a problem deleting that task'
 
@@ -260,7 +259,7 @@ def update(id):
     print(session['username'])
     print(can_delete(id))
     if(not can_delete(id)):
-        return redirect('/')
+        return redirect('/home')
 
     value=edit_helper(id)
     if request.method == 'POST':
@@ -268,7 +267,7 @@ def update(id):
 
         try:
             edit(id,val)
-            return redirect('/')
+            return redirect('/home')
         except:
             return 'There was an issue updating your task'
 
