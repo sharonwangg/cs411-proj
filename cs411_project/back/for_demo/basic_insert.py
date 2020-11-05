@@ -8,7 +8,7 @@ import hashlib
 import flask
 from flask import Flask, render_template, request,url_for, redirect,session
 import pymysql.cursors
-from datetime import date
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -89,7 +89,7 @@ def create_post(username,text,date,book_id):
     try:
         with connection.cursor() as cursor:
             sql = "INSERT INTO `post` (`username`,`text1`, `dateTime`,`book_id`) VALUES (%s, %s, %s, %s)"
-            cursor.execute(sql, (username,text,'2020-01-01','12'))
+            cursor.execute(sql, (username,text,date,book_id))
         connection.commit()
     finally:
         connection.close()
@@ -229,8 +229,8 @@ def index():
     if request.method == 'POST':
         task_content = request.form['content']
         try:
-            print(date.today())
-            create_post(session['username'],task_content,date.today(),'12')
+            print(datetime.now())
+            create_post(session['username'],task_content,datetime.now(),'12')
             #val=show_post()
             return redirect('/home')
         except:
