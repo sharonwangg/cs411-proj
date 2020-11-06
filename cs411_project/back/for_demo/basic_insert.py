@@ -136,6 +136,28 @@ def search_me(value):
         return returni
 
 
+def search_book(value):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+    returni=[]
+    try: 
+
+        with connection.cursor() as cur:
+
+                
+            cur.execute('Select book_id from books where book_title like %s limit 1', ("%" + value + "%")) 
+            rows = cur.fetchall()
+            returni=rows
+
+
+
+    finally:
+        connection.close()
+        return returni
+
+
 def edit_helper(post_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
@@ -228,9 +250,11 @@ def index():
     values=show_post()
     if request.method == 'POST':
         task_content = request.form['content']
+        book_content = request.form['book1']
+        book_ins = search_book(book_content)
         try:
             print(datetime.now())
-            create_post(session['username'],task_content,datetime.now(),'62')
+            create_post(session['username'],task_content,datetime.now(),book_ins)
             #val=show_post()
             return redirect('/home')
         except:
