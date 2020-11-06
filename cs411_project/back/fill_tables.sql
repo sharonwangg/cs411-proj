@@ -1,10 +1,16 @@
 #fills tables with dummy data for testing
 
+use book_club;
+
 insert into login values('batman','batman123','batman@gmail.com','43');
 insert into login values('robin','robin123','robin@gmail.com','34');
+insert into login values('superman','super123','super@gmail.com','45');
+insert into login values('joker','joker123','joker@gmail.com','37');
 
 insert into user values('batman');
 insert into user values('robin');
+insert into user values('superman');
+insert into user values('joker');
 
 insert into books values(128, 'Harper Lee', 'To Kill a Mockingbird', 'fiction');
 insert into books values(129, 'J. R. R. Tolkien', 'The Lord of the Rings', 'fantasy');
@@ -16,24 +22,6 @@ insert into books values(134, 'J. K Rowling', "Harry Potter and the Goblet of Fi
 insert into books values(135, 'J. K Rowling', "Harry Potter and the Order of the Phoenix", 'fantasty');
 insert into books values(136, 'J. K Rowling', "Harry Potter and the Half-Blood Prince", 'fantasty');
 insert into books values(137, 'J. K Rowling', "Harry Potter and the Deathly Hallows", 'fantasty');
-
-insert into post (username, text1, book_id) values ('batman', 'Boo Radley is my favorite character', 128);
-insert into post (username, text1, book_id) values ('robin', 'I enjoyed chapter 7', 12);
-insert into post (username, text1, book_id) values ('batman',  'I liked the use of metaphor in chapter 8', 12);
-insert into post (username, text1, book_id) values ('batman', 'There was too much imagery in chapter 2', 12);
-insert into post (username, text1, book_id) values ('robin', 'I disliked chapter 5', 12);
-insert into post (username, text1, book_id) values ('batman', 'I was shocked by Cedrics death', 134);
-insert into post (username, text1, book_id) values ('robin', 'This was a very insightful book', 130);
-insert into post (username, text1, book_id) values ('batman',  'Gandalf is my favorite character', 129);
-insert into post (username, text1, book_id) values ('batman', 'I prefer the book to the movie', 130);
-insert into post (username, text1, book_id) values ('robin', 'My favorite character is Legolas', 129);
-
-#complex queries for demo
-use book_club;
-(SELECT count(*), book_id FROM post WHERE username = 'batman' GROUP BY book_id) UNION (SELECT count(*), book_id FROM post WHERE username = 'robin' GROUP BY book_id);
-SELECT count(*), b.book_title FROM books b NATURAL JOIN Reads_ r WHERE b.author LIKE "%Rowling%" AND r.page_number >= 50 GROUP BY b.book_title; 
-
-
 Insert into books values('127','Alexandre Dumas','Count of Monte Cristo','Literary Fiction');
 Insert into books values('56','Thomas Hardy','Far from the Madding Crowd','General Fiction');
 Insert into books values('66','Henry Fielding','History of Tom Jones, A Foundling','Historical Fiction');
@@ -121,3 +109,25 @@ Insert into books values('79','Anthony Trollope','Can You Forgive Her?','Histori
 Insert into books values('59','Anne Brontë','Selected Poems by Currer, Ellis and Acton Bell','Poetry');
 Insert into books values('74','Amelia Ann Blanford Edwards','Thousand Miles up the Nile','*Non-fiction');
 Insert into books values('107',' Mrs. Isabella Beeton','Book of Household Management','Animals');
+
+
+insert into post (username, text1, book_id) values ('batman', 'Boo Radley deserved better', 128);
+insert into post (username, text1, book_id) values ('robin', 'I enjoyed chapter 7', 37);
+insert into post (username, text1, book_id) values ('batman',  'I liked Hansel and Gretel best', 62);
+insert into post (username, text1, book_id) values ('batman', 'I prefer the book to the movie', 130);
+insert into post (username, text1, book_id) values ('robin', 'My favorite character is Legolas', 129);
+insert into post (username, text1, book_id) values ('joker', 'I resonate with Draco', 131);
+insert into post (username, text1, book_id) values ('robin',  'I liked Rapunzel better than Hansel and Gretel', 62);
+insert into post (username, text1, book_id) values ('superman', 'I think Harry is the best character', 136);
+insert into post (username, text1, book_id) values ('joker', 'Voldemort is the best', 137);
+insert into post (username, text1, book_id) values ('batman', 'There was too much imagery in chapter 2', 25);
+insert into post (username, text1, book_id) values ('robin', 'I disliked chapter 5', 70);
+insert into post (username, text1, book_id) values ('superman', 'All for one and one for all', 68);
+insert into post (username, text1, book_id) values ('batman', 'I was shocked by Cedrics death', 134);
+insert into post (username, text1, book_id) values ('robin', 'This was a very insightful book', 130);
+insert into post (username, text1, book_id) values ('batman',  'Gandalf is my favorite character', 129);
+
+
+#complex queries for demo
+(SELECT count(*), book_id FROM post WHERE username = 'batman' GROUP BY book_id) UNION (SELECT count(*), book_id FROM post WHERE username = 'robin' GROUP BY book_id);
+SELECT count(*), b.book_title FROM books b NATURAL JOIN Reads_ r WHERE b.author LIKE "%Rowling%" AND r.page_number >= 50 GROUP BY b.book_title; 
