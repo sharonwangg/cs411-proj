@@ -1,3 +1,9 @@
+<!-- 
+    Templates written using the following tutorials:
+    https://www.codementor.io/@garethdwyer/building-a-crud-application-with-flask-and-sqlalchemy-dm3wv7yu2 
+    and https://realpython.com/introduction-to-flask-part-1-setting-up-a-static-site/
+-->
+
 {% extends 'layout.html' %}
 
 {% block title %}Home{% endblock %}
@@ -9,6 +15,9 @@
 <div class="content">
 
     <h4>Forum Posts</h4>
+    {% if msg != null %}
+        <p>{{ msg }}</p>
+    {% endif %}
 
         <table>
             <tr>

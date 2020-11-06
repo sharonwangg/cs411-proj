@@ -1,3 +1,7 @@
+#built using tutorials:
+#https://www.codementor.io/@garethdwyer/building-a-crud-application-with-flask-and-sqlalchemy-dm3wv7yu2
+#https://realpython.com/introduction-to-flask-part-1-setting-up-a-static-site/
+
 import requests
 import pprint
 import urllib.request as urllib
@@ -125,7 +129,7 @@ def search_me(value):
         with connection.cursor() as cur:
 
                 
-            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b where p.text1 like %s or p.username like %s or b.book_title like %s order by dateTime', ("%" + value + "%","%" + value + "%", "%" + value + "%")) 
+            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b where p.text1 like %s or p.username like %s or b.book_title like %s or b.author like %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%", "%" + value + "%")) 
             rows = cur.fetchall()
             returni=rows
 
@@ -251,6 +255,9 @@ def index():
     if request.method == 'POST':
         task_content = request.form['content']
         book_content = request.form['book1']
+        vals = show_post()
+        if task_content == "" or book_content == "":
+            return render_template('home.html', tasks = vals, usr = session['username'], msg='Post could not be added, please enter Post text and Book title')
         book_ins = search_book(book_content)
         try:
             print(datetime.now())
@@ -368,10 +375,10 @@ def search():
     if request.method == "POST":
         value = request.form['book']
         returns=search_me(value)
-        if len(returns) == 0:
-            return render_template('home.html', msg='No such posts')
+        if value == "" or len(returns) == 0:
+            return render_template('home.html', usr = session['username'], msg='No records for "' + value + '"')
         else:
-            return render_template('home.html',msg='These are the records',tasks=returns, usr = session['username'])
+            return render_template('home.html',msg='Records returned by search for "' + value + '"',tasks=returns, usr = session['username'])
 
     #return render_template('home.html')
 
