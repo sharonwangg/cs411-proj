@@ -45,7 +45,7 @@ def show_post():
         with connection.cursor() as cur:
 
                 
-            cur.execute('Select username, text1,dateTime,post_id from post order by dateTime desc') 
+            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b order by dateTime desc') 
             rows = cur.fetchall()
             returni=rows
     finally:
@@ -125,7 +125,7 @@ def search_me(value):
         with connection.cursor() as cur:
 
                 
-            cur.execute('Select username, text1,dateTime from post where text1 like %s or username like %s order by dateTime', ("%" + value + "%","%" + value + "%")) 
+            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b where p.text1 like %s or p.username like %s or b.book_title like %s order by dateTime', ("%" + value + "%","%" + value + "%", "%" + value + "%")) 
             rows = cur.fetchall()
             returni=rows
 
@@ -230,7 +230,7 @@ def index():
         task_content = request.form['content']
         try:
             print(datetime.now())
-            create_post(session['username'],task_content,datetime.now(),'12')
+            create_post(session['username'],task_content,datetime.now(),'62')
             #val=show_post()
             return redirect('/home')
         except:
@@ -347,7 +347,7 @@ def search():
         if len(returns) == 0:
             return render_template('home.html', msg='No such posts')
         else:
-            return render_template('home.html',msg='These are the records',task=returns, usr = session['username'])
+            return render_template('home.html',msg='These are the records',tasks=returns, usr = session['username'])
 
     #return render_template('home.html')
 

@@ -8,32 +8,21 @@
 <body>
 <div class="content">
 
-    <h4 style="text-align: center">Forum Posts</h4>
-
-    
-
-    
-        <p></p>
-        <center>
-        {% for data in task %}
-            <tr>
-                <td> {{data[1]}} by {{data[0]}} on {{data[2]}} </td>
-                </br>
-            </tr>
-        {% endfor %}
-        </center>
+    <h4>Forum Posts</h4>
 
         <table>
             <tr>
                 <th>Username</th>
                 <th>Post</th>
                 <th>Date Posted</th>
+                <th>Book Title</th>
             </tr>
             {% for task in tasks %}
                 <tr>
                     <td>{{ task[0] }}</td>
                     <td>{{ task[1] }}</td>
                     <td>{{ task[2] }}</td>
+                    <td>{{ task[4] }}</td>
                     {% if task[0] == usr %}
                     <td>
                         <a href="/delete/{{task[3]}}">Delete</a>
@@ -45,14 +34,15 @@
                 </tr>
             {% endfor %}
         </table>
-
-        <form method="post" action="/search" 
-        style="margin:auto;max-width:600px">
+         <br>
+         <form method="post" action="/search" 
+         >
            <input type="text" placeholder="Search Posts" name="book">
            <button type="submit"><i class="fa fa-search"></i>
            </button>
        </form>
-
+       <br>
+       <br>
     <div class="form">
         <form action="/" method="POST">
             <input type="text" name="content" id="content">
