@@ -8,7 +8,7 @@ import urllib.request as urllib
 import zipfile
 import pymysql.cursors
 import json
-import hashlib 
+import hashlib
 import flask
 from flask import Flask, render_template, request,url_for, redirect,session
 import pymysql.cursors
@@ -25,9 +25,9 @@ def log_me_in(username,password):
                                  db='book_club')
 
     returni=[]
-    try: 
+    try:
         with connection.cursor() as cur:
-            cur.execute('Select username,email,age from login where username = %s and password = %s', ( username, password)) 
+            cur.execute('Select username,email,age from login where username = %s and password = %s', ( username, password))
             rows = cur.fetchone()
             returni=rows
 
@@ -44,12 +44,12 @@ def show_post():
 
     returni=[]
 
-    try: 
+    try:
 
         with connection.cursor() as cur:
 
-                
-            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b order by dateTime desc') 
+
+            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b order by dateTime desc')
             rows = cur.fetchall()
             returni=rows
     finally:
@@ -71,7 +71,7 @@ def create_user(username,password,email,age):
         with connection.cursor() as cursor:
             sql = "INSERT INTO `user` (`username`) VALUES (%s)"
             cursor.execute(sql, (username))
-            #password_hash= hashlib.md5(password).hexdigest() 
+            #password_hash= hashlib.md5(password).hexdigest()
             sql = "INSERT INTO `login` (`username`,`password`,`email`,`age`) VALUES (%s,%s,%s,%s)"
             value=cursor.execute(sql, (username,password,email,age))
         connection.commit()
@@ -116,7 +116,7 @@ def delete_record(value):
         connection.close()
 
 
-    
+
 
 def search_me(value):
     connection = pymysql.connect(host='localhost',
@@ -124,12 +124,12 @@ def search_me(value):
                                  password='cs411',
                                  db='book_club')
     returni=[]
-    try: 
+    try:
 
         with connection.cursor() as cur:
 
-                
-            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b where p.text1 like %s or p.username like %s or b.book_title like %s or b.author like %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%", "%" + value + "%")) 
+
+            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b where p.text1 like %s or p.username like %s or b.book_title like %s or b.author like %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%", "%" + value + "%"))
             rows = cur.fetchall()
             returni=rows
 
@@ -146,12 +146,12 @@ def search_book(value):
                                  password='cs411',
                                  db='book_club')
     returni=[]
-    try: 
+    try:
 
         with connection.cursor() as cur:
 
-                
-            cur.execute('Select book_id from books where book_title like %s limit 1', ("%" + value + "%")) 
+
+            cur.execute('Select book_id from books where book_title like %s limit 1', ("%" + value + "%"))
             rows = cur.fetchall()
             returni=rows
 
@@ -170,12 +170,12 @@ def edit_helper(post_id):
 
     returni=[]
 
-    try: 
+    try:
 
         with connection.cursor() as cur:
 
-                
-            cur.execute('Select username, text1,dateTime,post_id from post where post_id=%s', post_id) 
+
+            cur.execute('Select username, text1,dateTime,post_id from post where post_id=%s', post_id)
             rows = cur.fetchone()
             returni=rows
     finally:
@@ -205,21 +205,17 @@ def can_delete(id):
                                  password='cs411',
                                  db='book_club')
     returni=''
-    try: 
+    try:
 
         with connection.cursor() as cur:
 
-                
-            cur.execute('Select username from post where post_id=%s', str(id)) 
+
+            cur.execute('Select username from post where post_id=%s', str(id))
             rows = cur.fetchone()
             returni=rows[0]
     finally:
         connection.close()
         return True if(returni==session['username']) else False
-
-
-
-
 
 
 def show_user(username):
@@ -230,18 +226,113 @@ def show_user(username):
 
     returni=[]
 
-    try: 
+    try:
 
         with connection.cursor() as cur:
-
-                
-            cur.execute('Select username,email,age from login where username=%s',username) 
+            cur.execute('Select username,email,age from login where username=%s',username)
             rows = cur.fetchone()
             returni=rows
     finally:
         connection.close()
         return returni
 
+
+def start_reading(username, book_id, page_number):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cur:
+            sql = "INSERT INTO `Reads` (`username, book_id, page_number`) VALUES (%s, %s, %s)"
+            cur.execute(sql, (username, book_id, page_number))
+        connection.commit()
+    finally:
+        connection.close()
+
+
+def update_page_number(username, book_id, page_number):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cur:
+            sql = "UPDATE `Reads` SET page_number = %s WHERE username = %s AND book_id = %s"
+            cur.execute(sql, (page_number, username, book_id))
+        connection.commit()
+    finally:
+        connection.close()
+
+
+def leave_group(username, group_id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cur:
+            sql = "DELETE FROM `Group` WHERE username = %s AND group_id = %s"
+            cur.execute(sql, (username, group_id))
+        connection.commit()
+    finally:
+        connection.close()
+
+def start_reading(username, book_id, page_number):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cur:
+            sql = "INSERT INTO `Reads` (`username, book_id, page_number`) VALUES (%s, %s, %s)"
+            cur.execute(sql, (username, book_id, page_number))
+        connection.commit()
+    finally:
+        connection.close()
+
+
+def stop_reading(username, book_id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cur:
+            sql = "DELETE FROM `Reads` WHERE username = %s AND book_id = %s"
+            cur.execute(sql, (username, book_id))
+        connection.commit()
+    finally:
+        connection.close()
+
+
+def like(username, book_id, like=True):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cur:
+            sql = ""
+            if like:
+                if SELECT EXISTS(SELECT * FROM `Likes` WHERE username = %s AND book_id = %s):
+                    sql = "UPDATE `Likes` SET likes_dislikes = 'Like' WHERE username = %s AND book_id = %s"
+                else:
+                    sql = "INSERT INTO `Likes` (`username`, `book_id`, `likes_dislikes`) VALUES (%s, %s, 'Like')"
+            else:
+                if SELECT EXISTS(SELECT * FROM `Likes` WHERE username = %s AND book_id = %s):
+                    sql = "UPDATE `Likes` SET likes_dislikes = 'Dislike' WHERE username = %s AND book_id = %s"
+                else:
+                    sql = "INSERT INTO `Likes` (`username`, `book_id`, `likes_dislikes`) VALUES (%s, %s, 'Dislike')"
+        connection.commit()
+    finally:
+        connection.close()
 
 
 @app.route('/', methods=['POST', 'GET'])
