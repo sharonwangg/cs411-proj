@@ -86,6 +86,7 @@ PRIMARY KEY(chat_id)
 CREATE TABLE club(
 username varchar(10),
 club_id int not null,
+is_admin BOOLEAN default 0,
 PRIMARY KEY(username, club_id),
 FOREIGN KEY(username) REFERENCES user(username) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -94,7 +95,8 @@ CREATE TABLE timeline(
 club_id int, 
 dateTime datetime default NOW(),
 chapter varchar(50),
-PRIMARY KEY(club_id)
+timeline_id int AUTO_INCREMENT,
+PRIMARY KEY(timeline_id)
 );
 
 CREATE TABLE club_chats(

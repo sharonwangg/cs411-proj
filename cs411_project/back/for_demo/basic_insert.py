@@ -335,6 +335,143 @@ def like(username, book_id, like=True):
         connection.close()
 
 
+#book club functions
+
+#event functions are available to all users
+def add_event(date, e_name, e_desc, e_loc, group_id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO `Event_` (`dateTime`,`event_name`,`event_description`,`location`,`group_id`) VALUES(%s,%s,%s,%s,%s)"
+            cursor.execute(sql, (date, e_name, e_desc, e_loc, group_id))
+        connection.commit()
+    finally:
+        connection.close()
+
+def search_events(value):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+    returni=[]
+    try: 
+        with connection.cursor() as cur:   
+            cur.execute('Select dateTime, event_name, event_description, location from Event_ where event_name like %s or event_description like %s or location like %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%")) 
+            rows = cur.fetchall()
+            returni=rows
+
+    finally:
+        connection.close()
+        return returni
+
+
+def delete_event(ev_id):
+    #check if superuser of group, then allow delete or not delete - need to rework book_club table to select superuser
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cursor:
+            sql = "DELETE FROM `Event_` WHERE event_id=(%s)"
+            cursor.execute(sql, (ev_id))
+        connection.commit()
+    finally:
+        connection.close()
+
+def edit_helper_event(ev_id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+    returni=[]
+    try: 
+        with connection.cursor() as cur:
+            cur.execute('Select dateTime, event_name, event_description, location from Event_ where post_id=%s', ev_id) 
+            rows = cur.fetchone()
+            returni=rows
+    finally:
+        connection.close()
+        return returni
+
+def edit_event(date, loc, ev_name, ev_desc, ev_id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE Event_ SET dateTime=%s, location=%s, event_name=%s, event_description=%s WHERE event_id=%s"
+            cursor.execute(sql, (date, loc, ev_name, ev_desc, str(ev_id)))
+        connection.commit()
+    finally:
+        connection.close()
+
+
+#timeline functions are only available to superusers
+def add_timeline_event(date, chap):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+    try:
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO `timeline` (dateTime, chapter) VALUES(%s,%s)"
+            cursor.execute(sql, (date, chap))
+        connection.commit()
+    finally:
+        connection.close()
+
+def delete_timeline_event(time_id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cursor:
+            sql = "DELETE FROM timeline WHERE timeline_id=(%s)"
+            cursor.execute(sql, (time_id))
+        connection.commit()
+    finally:
+        connection.close()
+
+def edit_helper_timeline(time_id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+    returni=[]
+    try: 
+        with connection.cursor() as cur:
+            cur.execute('Select dateTime, chapter from timeline where timeline_id=%s', time_id) 
+            rows = cur.fetchone()
+            returni=rows
+    finally:
+        connection.close()
+        return returni
+
+def edit_timeline(date, chap, timeid):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE Event_ SET dateTime=%s, chapter=%s, WHERE timeline_id=%s"
+            cursor.execute(sql, (date, chap, str(timeid)))
+        connection.commit()
+    finally:
+        connection.close()
+
+
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if 'loggedin' not in session:
