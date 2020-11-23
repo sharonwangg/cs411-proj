@@ -310,8 +310,25 @@ def stop_reading(username, book_id):
     finally:
         connection.close()
 
+def like_helper(user,bookid):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+    returni=[]
+    try:
+        with connection.cursor() as cur:
+            cur.execute('SELECT * FROM Likes WHERE EXISTS(SELECT * FROM `Likes` WHERE username = %s AND book_id = %s)', (user, bookid))
+            rows = cur.fetchall()
+            returni=rows
+    finally:
+        connection.close()
+        if returni.len == 0:
+            return False
+        else:
+            return True
 
-def like(username, book_id, like=True):
+def like(user, bookid, like=True):
     connection = pymysql.connect(host='localhost',
                                  user='root',
                                  password='cs411',
@@ -321,15 +338,16 @@ def like(username, book_id, like=True):
         with connection.cursor() as cur:
             sql = ""
             if like:
-                if SELECT EXISTS(SELECT * FROM `Likes` WHERE username = %s AND book_id = %s):
+                if like_helper(user, bookid):
                     sql = "UPDATE `Likes` SET likes_dislikes = 'Like' WHERE username = %s AND book_id = %s"
                 else:
                     sql = "INSERT INTO `Likes` (`username`, `book_id`, `likes_dislikes`) VALUES (%s, %s, 'Like')"
             else:
-                if SELECT EXISTS(SELECT * FROM `Likes` WHERE username = %s AND book_id = %s):
+                if like_helper(user, bookid):
                     sql = "UPDATE `Likes` SET likes_dislikes = 'Dislike' WHERE username = %s AND book_id = %s"
                 else:
                     sql = "INSERT INTO `Likes` (`username`, `book_id`, `likes_dislikes`) VALUES (%s, %s, 'Dislike')"
+        cur.execute(sql, (user, bookid))
         connection.commit()
     finally:
         connection.close()
