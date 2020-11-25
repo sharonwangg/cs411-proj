@@ -58,7 +58,7 @@ for i in aaa.keys():
             j=j+1
         else:
             if(i.split("'")[0]+i.split("'")[1] in author_name.keys()):
-                b.write(pre+"'"+str(j)+"', '"+author_name[i.split("'")[0]+i.split("'")[1]]+"', '"+i+"', '"+''.join(genre)+"');\n")
+                b.write(pre+"'"+str(j)+"', '"+author_name[i.split("'")[0]+i.split("'")[1]]+"', '"+i+"', '"+' '.join(genre)+"');\n")
 
 
 print('The Three Musketeer' in author_name.keys())

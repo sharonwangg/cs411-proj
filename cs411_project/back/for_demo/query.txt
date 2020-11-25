@@ -29,12 +29,12 @@ Insert into books values('394', ' Jesse Franklin Bone', 'Pandemic', 'TornadoesAc
 Insert into books values('395', ' Oscar Wilde', 'The Happy Prince and Other Tales', 'English Fantasy fictionLittérature irlandaiseStatuesConstancyJuvenile fiction');
 Insert into books values('396', ' Virginia Woolf', 'A Haunted House', 'Haunted housesGhostsJuvenile literature');
 Insert into books values('397', ' J.M. Barrie', 'Peter Pan (Peter and Wendy)', 'FantasyJuvenile fictionAccessible bookChildren's stories');
-Insert into books values('398', ' Charles Dickens', 'The Schoolboy's Story', 'SchoolsFriendshipFiction');
+Insert into books values('398', ' Charles Dickens', 'The Schoolboy's Story', 'Schools Friendship Fiction');
 Insert into books values('398', ' William Shakespeare', 'Macbeth', 'Stage historyPlaysShakespeare, william, 1564-1616, juvenile literatureReadersCritique et interprétation');
 Insert into books values('399', ' H. G. Wells', 'The Time Machine', 'Woodworking toolsWoodworking machinerySawsAccessible bookProtected DAISY');
 Insert into books values('400', ' Jane Austen', 'Sense and Sensibility', 'Women authorsBibliographyWomen and literatureFiction');
 Insert into books values('401', ' Mark Twain', 'The Prince and the Pauper', 'Adventure and adventurers, fictionReadersEdward vi, king of england, 1537-1553, fictionAccessible bookFiction');
-Insert into books values('402', ' William Shakespeare', 'A Midsummer Night's Dream', 'World War, 1939-1945Concentration campsStage historyPlaysEnglish literature, study and teaching');
+Insert into books values('402', ' William Shakespeare', 'A Midsummer Night's Dream', 'World War, 1939-1945 Concentration camps Stage history Plays English literature, study and teaching');
 Insert into books values('402', ' Wilkie Collins', 'The Moonstone', 'Teenage boysInfluenza Epidemic, 1918-1919Fiction');
 Insert into books values('403', ' Lev Nikolayevich Tolstoy', 'War and Peace', 'Law, Anglo-SaxonWar and emergency legislationCorporation lawAccessible bookLegislation');
 Insert into books values('404', ' Mark Twain', 'The Adventures of Huckleberry Finn', 'runaway teenagersAmerican manuscriptsHuckleberry FinnAnglais (langue)French');
@@ -70,7 +70,7 @@ Insert into books values('433', ' David Herbert Lawrence', 'The Rainbow', 'Instr
 Insert into books values('434', ' Edgar Allen Poe', 'The Raven', 'CorrespondencePoésie fantastique américaineAestheticsPoésie enfantine américaineAccessible book');
 Insert into books values('435', ' Jack London', 'The Sea Wolf', 'Accessible book');
 Insert into books values('436', ' Franz Kafka', 'The Metamorphosis', 'Accessible bookProtected DAISY');
-Insert into books values('437', ' Thomas Hardy', 'Tess of the d'Urbevilles', 'GraphicFortnightly reviewNational observer');
+Insert into books values('437', ' Thomas Hardy', 'Tess of the d'Urbevilles', 'Graphic Fortnightly review National observer');
 Insert into books values('437', ' John Cleland', 'Fanny Hill: Memoirs of a Woman of Pleasure', 'Accessible bookWomen in fictionProstitution in fictionFiction');
 Insert into books values('438', ' Lucius Apuleius', 'The Golden Ass', 'Classic Literatureopen_syllabus_projectFiction');
 Insert into books values('439', ' James Joyce', 'Dubliners', 'ProtestantismHalloweenAccessible bookDomestic fictionReading Level-Grade 12');
