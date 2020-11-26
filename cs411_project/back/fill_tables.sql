@@ -27,7 +27,7 @@ Insert into books values('56','Thomas Hardy','Far from the Madding Crowd','Gener
 Insert into books values('66','Henry Fielding','History of Tom Jones, A Foundling','Historical Fiction');
 Insert into books values('61','Jules Verne','Mysterious Island','Science Fiction');
 Insert into books values('21',' Nat Love','Life and Adventures of Nat Love','Biography & Autobiography');
-Insert into books values('26','Bai Li 李白','Drinking Alone by Moonlight','Poetry');
+Insert into books values('26','Bai Li','Drinking Alone by Moonlight','Poetry');
 Insert into books values('89','Alexandre Dumas','Twenty Years After','Action & Adventure Fiction');
 Insert into books values('42','John Bagnell Bury','History of Greece to the Death of Alexander the Great, Vol I','Antiquity');
 Insert into books values('5','Anton Chekhov','Tales of Chekhov Vol. 01','Short Stories');
@@ -60,7 +60,7 @@ Insert into books values('33','George Barr McCutcheon','Brewsters Millions','Hum
 Insert into books values('38','Anna Katharine Green','Leavenworth Case','Detective Fiction');
 Insert into books values('8',' Alfred Russel Wallace','Is Mars Habitable?','*Non-fiction');
 Insert into books values('4','Elizabeth Barrett Browning','Drama of Exile','Myths, Legends & Fairy Tales');
-Insert into books values('3',' Plato (Πλάτων)','Apology of Socrates','*Non-fiction');
+Insert into books values('3',' Plato','Apology of Socrates','*Non-fiction');
 Insert into books values('48','Thomas Hardy','Return of the Native','General Fiction');
 Insert into books values('16','Charles Kingsley','Water-Babies','Action & Adventure');
 Insert into books values('14','Bertrand Russell','Problems of Philosophy','*Non-fiction');

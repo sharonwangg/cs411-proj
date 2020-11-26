@@ -11,6 +11,8 @@ import json
 import hashlib
 import flask
 from flask import Flask, render_template, request,url_for, redirect,session
+from db import  save_room, add_room_members, get_rooms_for_user, get_room, is_room_member, \
+    get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages,get_id
 import pymysql.cursors
 from datetime import datetime
 
@@ -161,6 +163,26 @@ def search_book(value):
         connection.close()
         return returni
 
+def book_id_to_name(book_id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+    returni=[]
+    try:
+
+        with connection.cursor() as cur:
+
+
+            cur.execute('Select book_title, author from books where book_id=%s', book_id)
+            rows = cur.fetchone()
+            returni=rows
+
+
+    finally:
+        connection.close()
+        return returni
+
 
 def edit_helper(post_id):
     connection = pymysql.connect(host='localhost',
@@ -275,7 +297,7 @@ def leave_group(username, group_id):
 
     try:
         with connection.cursor() as cur:
-            sql = "DELETE FROM `Group` WHERE username = %s AND group_id = %s"
+            sql = "DELETE FROM `Group_` WHERE username = %s AND group_id = %s"
             cur.execute(sql, (username, group_id))
         connection.commit()
     finally:
@@ -378,7 +400,7 @@ def search_events(value):
     returni=[]
     try: 
         with connection.cursor() as cur:   
-            cur.execute('Select dateTime, event_name, event_description, location from Event_ where event_name like %s or event_description like %s or location like %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%")) 
+            cur.execute('Select event_id, dateTime, event_name, event_description, location from Event_ where event_name like %s or event_description like %s or location like %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%")) 
             rows = cur.fetchall()
             returni=rows
 
@@ -410,7 +432,7 @@ def edit_helper_event(ev_id):
     returni=[]
     try: 
         with connection.cursor() as cur:
-            cur.execute('Select dateTime, event_name, event_description, location from Event_ where post_id=%s', ev_id) 
+            cur.execute('Select event_id, dateTime, event_name, event_description, location from Event_ where event_id=%s', ev_id) 
             rows = cur.fetchone()
             returni=rows
     finally:
@@ -489,6 +511,105 @@ def edit_timeline(date, chap, timeid):
     finally:
         connection.close()
 
+
+def get_group(username):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+    returni=[]
+
+    try:
+
+        with connection.cursor() as cur:
+            cur.execute('Select username,group_id,book_id,super_user from Group_ where username=%s', username)
+            rows = cur.fetchone()
+            returni=rows
+    finally:
+        connection.close()
+        return returni
+
+def new_group(username,book_id,super_user):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO `Group_` (`username`,`book_id`,`super_user`) VALUES (%s, %s, %s)"
+            cursor.execute(sql, (username,book_id,super_user))
+        connection.commit()
+    finally:
+        connection.close()
+
+def get_group_members(group_id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+    returni=[]
+
+    try:
+
+        with connection.cursor() as cur:
+            cur.execute('Select username from Group_ where group_id=%s', group_id)
+            rows = cur.fetchall()
+            returni=rows
+    finally:
+        connection.close()
+        return returni
+
+def get_group_byid(group_id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+    returni=[]
+
+    try:
+
+        with connection.cursor() as cur:
+            cur.execute('select * from Group_ where group_id = %s',group_id)
+            rows = cur.fetchone()
+            returni=rows
+    finally:
+        connection.close()
+        return returni  
+
+def add_to_group(username,group_id,book_id,super_user):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    try:
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO `Group_` (`username`,`group_id`,`book_id`,`super_user`) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (username,group_id,book_id,super_user))
+        connection.commit()
+    finally:
+        connection.close()
+
+def show_events(group_id):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='cs411',
+                                 db='book_club')
+
+    returni=[]
+
+    try:
+
+        with connection.cursor() as cur:
+
+
+            cur.execute('Select * from Event_ where group_id = %s order by dateTime desc', group_id)
+            rows = cur.fetchall()
+            returni=rows
+    finally:
+        connection.close()
+        return returni
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -629,12 +750,133 @@ def search():
     #return render_template('home.html')
 
 
+@app.route('/create_group/', methods=['GET', 'POST'])
+def create_group():
+    message = 'Please Enter the group name and book'
+    if request.method == 'POST':
+        group_name = request.form['group_name']
+        book_content = request.form['book1']
+        if group_name == "" :
+            return render_template('create_group.html', msg=' Group could not be created, please enter Group name and book')
+        book_ins = search_book(book_content)
+        new_group(session['username'],book_ins,session['username'])
+        return redirect(url_for('group'))
+
+    return render_template('create_group.html', message=message)
+
+@app.route('/join_group', methods=['GET', 'POST'])
+def join_group():
+    message = 'Please Enter the group id'
+    if request.method == 'POST':
+        group_id = request.form['group_id']
+        if group_id == "":
+            return render_template('join_group.html', msg='Invalid Group ID')
+        val = get_group_byid(group_id)
+        if(val is None):
+            return render_template('join_group.html', msg='Invalid Group ID')
+        add_to_group(session['username'],val[1],val[2],val[3])
+        return redirect(url_for('group'))
+    return render_template('join_group.html')
 
 
+@app.route('/group', methods=['POST', 'GET'])
+def group():
+    usr = session['username']
+    val = get_group(usr)
+    if(val is None):
+        return redirect(url_for('create_group'))
+    group_id = val[1]
+    book_id = val[2]
+    book = book_id_to_name(book_id)
+    events = show_events(group_id)
+    if usr == val[3]:
+        admin = 1
+    else:
+        admin = 0
+    members = get_group_members(group_id)
+    if request.method == 'POST':
+        e_name = request.form['ename']
+        date = request.form['date']
+        time = request.form['time']
+        e_desc = request.form['desc']
+        e_loc = request.form['loc']
+        e_date = date + " " + time
+        events = show_events(group_id)
+        if e_name == "" or date == "" or time == "" or e_desc == "" or e_loc == "":
+            return render_template('group.html', group_id = group_id, book = book[0], author = book[1], admin = admin, tasks = events, members = members, msg='Event could not be added, please enter valid Event data')
+        add_event(e_date, e_name, e_desc, e_loc, group_id)
+        return redirect('/group')
+    return render_template('group.html', group_id = group_id, book = book[0], author = book[1], admin = admin, tasks = events, members = members,)
 
+@app.route('/delete_event/<int:e_id>')
+def delete_e(e_id):
+    val = get_group(session['username'])
+    if(val is None):
+        return redirect(url_for('create_group'))
+    # if(session['username'] != val[3]):
+    #     return redirect('/group')
+    try:
+        delete_event(e_id)
+        return redirect('/group')
+    except:
+        return 'There was a problem deleting that task'
 
+@app.route('/update_event/<int:e_id>', methods=['GET', 'POST'])
+def update_e(e_id):
+    val = get_group(session['username'])
+    if(val is None):
+        return redirect(url_for('create_group'))
+    # if(session['username'] != val[3]):
+    #     return redirect('/group')
 
+    value=edit_helper_event(e_id)
+    value = (value[0],value[1].split(" "),value[2],value[3],value[4])
+    if request.method == 'POST':
+        date = request.form['date']
+        time = request.form['time']
+        e_date = date + " " + time
+        loc = request.form['loc']
+        ev_name = request.form['ename']
+        ev_desc = request.form['desc']
+        try:
+            edit_event(e_date, loc, ev_name, ev_desc, e_id)
+            return redirect('/group')
+        except:
+            return 'There was an issue updating your task'
 
+    else:
+        return render_template('update_event.html', task=value)
+
+@app.route('/search_event', methods=['GET', 'POST'])
+def search_e():
+    usr = session['username']
+    val = get_group(usr)
+    if(val is None):
+        return redirect(url_for('create_group'))
+    group_id = val[1]
+    book_id = val[2]
+    book = book_id_to_name(book_id)
+    events = show_events(group_id)
+    if usr == val[3]:
+        admin = 1
+    else:
+        admin = 0    
+    if request.method == "POST":
+        value = request.form['event']
+        returns = search_events(value)
+        if value == "" or len(returns) == 0:
+            return render_template('group.html', group_id = group_id, book = book[0], author = book[1], admin = admin, tasks = returns, members = members, msg='No records for "' + value + '"')
+        else:
+            return render_template('group.html', group_id = group_id, book = book[0], author = book[1], admin = admin, tasks = returns, members = members, msg='Records returned by search for "' + value + '"')
+
+@app.route('/leave_group/<int:g_id>')
+def leave(g_id):
+    val = get_group(session['username'])
+    if(val is None):
+        return redirect(url_for('create_group'))
+
+    leave_group(session['username'], g_id)
+    return redirect('/group')
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+
+{% block title %}MyGroup{% endblock %}
+
+{% block content %}
+<h2>Group Page</h2>
+<h2>Group ID: {{ group_id }}</h2>
+
+	<body>
+        <h4>{{book}} by {{author}}</h4>
+        <h4>Group Members</h4>
+        {% for member in members %}
+        <td>{{ member[0] }}</td>
+        <br>
+        {% endfor %}
+        <h4>Events</h4>
+        {% if msg != null %}
+            <p>{{ msg }}</p>
+        {% endif %}
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Event Name</th>
+                <th>Description</th>
+                <th>Location</th>
+            </tr>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task[1] }}</td>
+                    <td>{{ task[2] }}</td>
+                    <td>{{ task[3] }}</td>
+                    <td>{{ task[4] }}</td>
+                    <td>
+                        <a href="/delete_event/{{task[0]}}">Delete</a>
+                        <br>
+                        <a href="/update_event/{{task[0]}}">Update</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+            
+        <br>
+        <form method="post" action="/search_event" 
+        >
+            <input type="text" placeholder="Search Events" name="event">
+            <button type="submit"><i class="fa fa-search"></i>
+            </button>
+        </form>
+        <br>
+        <br>
+
+        <div class="form">
+            <form action="/group" method="POST">
+                <h4>Create Event</h4>
+                <label>Event Name:</label>
+                <input type="text" placeholder="Event Name" name="ename" id="ename">
+                <br>
+                <label>Date:</label>
+                <input type="date" placeholder="Date" name="date" id="date">
+                <br>
+                <label>Time:</label>
+                <input type="time" placeholder="Time" name="time" id="time">
+                <br>
+                <label>Description:</label>
+                <input type="text" placeholder="Description" name="desc" id="desc">
+                <br>
+                <label>Location:</label>
+                <input type="text" placeholder="Location" name="loc" id="loc">
+                <br>
+                <input type="submit" value="Create Event">
+            </form>
+        </div>
+        <br>
+        <br>
+        <form action="/leave_group/{{group_id}}">
+            <input type="submit" value= "Leave Group" />
+        </form>
+		</div>
+	</body>
+{% endblock %}

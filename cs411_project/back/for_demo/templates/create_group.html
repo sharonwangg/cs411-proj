@@ -1,0 +1,26 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Group</title>
+</head>
+<body>
+<div class="cgroup">
+    {% if msg != null %}
+    <p>{{ msg }}</p>
+    {% endif %}
+    <h1>Create Group</h1>
+    <div class="links">
+        <a href="{{ url_for('create_group') }}" class="active">Create Group</a>
+        <a href="{{ url_for('join_group') }}">Join Group</a>
+    </div>
+    <form action="{{ url_for('create_group') }}" method="post">
+        <label>Group Name:</label>
+        <input type="text" name="group_name" required>
+        <br>
+        <label>Book Name:</label>
+        <input type="text" name="book1" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+</body>
