@@ -1,7 +1,8 @@
-#fills tables with dummy data for testing
+#fills tables with data
 
 use book_club;
 
+#dummy data for testing for midterm demo
 insert into login values('batman','batman123','batman@gmail.com','43');
 insert into login values('robin','robin123','robin@gmail.com','34');
 insert into login values('superman','super123','super@gmail.com','45');
@@ -109,6 +110,34 @@ Insert into books values('79','Anthony Trollope','Can You Forgive Her?','Histori
 Insert into books values('59','Anne Brontë','Selected Poems by Currer, Ellis and Acton Bell','Poetry');
 Insert into books values('74','Amelia Ann Blanford Edwards','Thousand Miles up the Nile','*Non-fiction');
 Insert into books values('107',' Mrs. Isabella Beeton','Book of Household Management','Animals');
+
+insert into post (username, text1, book_id) values ('batman', 'Boo Radley deserved better', 128);
+insert into post (username, text1, book_id) values ('robin', 'I enjoyed chapter 7', 37);
+insert into post (username, text1, book_id) values ('batman',  'I liked Hansel and Gretel best', 62);
+insert into post (username, text1, book_id) values ('batman', 'I prefer the book to the movie', 130);
+insert into post (username, text1, book_id) values ('robin', 'My favorite character is Legolas', 129);
+insert into post (username, text1, book_id) values ('joker', 'I resonate with Draco', 131);
+insert into post (username, text1, book_id) values ('robin',  'I liked Rapunzel better than Hansel and Gretel', 62);
+insert into post (username, text1, book_id) values ('superman', 'I think Harry is the best character', 136);
+insert into post (username, text1, book_id) values ('joker', 'Voldemort is the best', 137);
+insert into post (username, text1, book_id) values ('batman', 'There was too much imagery in chapter 2', 25);
+insert into post (username, text1, book_id) values ('robin', 'I disliked chapter 5', 70);
+insert into post (username, text1, book_id) values ('superman', 'All for one and one for all', 68);
+insert into post (username, text1, book_id) values ('batman', 'I was shocked by Cedrics death', 134);
+insert into post (username, text1, book_id) values ('robin', 'This was a very insightful book', 130);
+insert into post (username, text1, book_id) values ('batman',  'Gandalf is my favorite character', 129);
+
+insert into Likes values ('batman', 37, 'Like');
+insert into Likes values ('batman', 128, 'Dislike');
+insert into Likes values ('robin', 131, 'Like');
+insert into Likes values ('joker', 131, 'Dislike');
+insert into Likes values ('superman', 68, 'Like');
+
+#complex queries for demo
+(SELECT count(*), book_id FROM post WHERE username = 'batman' GROUP BY book_id) UNION (SELECT count(*), book_id FROM post WHERE username = 'robin' GROUP BY book_id);
+SELECT count(*), b.book_title FROM books b NATURAL JOIN Reads_ r WHERE b.author LIKE "%Rowling%" AND r.page_number >= 50 GROUP BY b.book_title; 
+
+#real data from suervey of users
 Insert into books values('367', ' William Shakespeare', 'Romeo and Juliet', 'historyPlaysEnglish literature, study and teaching');
 Insert into books values('368', ' Arthur Conan Doyle', 'The Adventures of Sherlock Holmes', 'ConclusionspenniesConfederate States Armydetective fictionthumbs');
 Insert into books values('369', ' Jane Austen', 'Pride and Prejudice', 'English');
@@ -141,7 +170,7 @@ Insert into books values('395', ' Oscar Wilde', 'The Happy Prince and Other Tale
 Insert into books values('396', ' Virginia Woolf', 'A Haunted House', 'Haunted housesGhostsJuvenile literature');
 Insert into books values('397', ' J.M. Barrie', 'Peter Pan (Peter and Wendy)', 'FantasyJuvenile fictionAccessible bookChildrens stories');
 Insert into books values('398', ' Charles Dickens', 'The Schoolboys Story', 'Schools Friendship Fiction');
-Insert into books values('398', ' William Shakespeare', 'Macbeth', 'Stage historyPlaysShakespeare, william');
+Insert into books values('445', ' William Shakespeare', 'Macbeth', 'Stage historyPlaysShakespeare, william');
 Insert into books values('399', ' H. G. Wells', 'The Time Machine', 'Woodworking toolsWoodworking machinerySawsAccessible bookProtected DAISY');
 Insert into books values('400', ' Jane Austen', 'Sense and Sensibility', 'Women authorsBibliographyWomen and literatureFiction');
 Insert into books values('401', ' Mark Twain', 'The Prince and the Pauper', 'Adventure and adventurers');
@@ -188,29 +217,6 @@ Insert into books values('439', ' James Joyce', 'Dubliners', 'ProtestantismHallo
 Insert into books values('440', ' Jules Verne', 'An Antarctic Mystery', 'Southern OceanScience fictiontravelAntarcticaAccessible book');
 Insert into books values('441', ' Edgar Rice Burroughs', 'The Gods of Mars', 'American Science fictionScience fiction, AmericanAccessible bookProtected DAISYFiction');
 Insert into books values('442', ' Laozi', 'Tao Te Ching', 'Body, Mind & SpiritOuvrages avant 1800Accessible bookPeaceReligion');
-
-insert into post (username, text1, book_id) values ('batman', 'Boo Radley deserved better', 128);
-insert into post (username, text1, book_id) values ('robin', 'I enjoyed chapter 7', 37);
-insert into post (username, text1, book_id) values ('batman',  'I liked Hansel and Gretel best', 62);
-insert into post (username, text1, book_id) values ('batman', 'I prefer the book to the movie', 130);
-insert into post (username, text1, book_id) values ('robin', 'My favorite character is Legolas', 129);
-insert into post (username, text1, book_id) values ('joker', 'I resonate with Draco', 131);
-insert into post (username, text1, book_id) values ('robin',  'I liked Rapunzel better than Hansel and Gretel', 62);
-insert into post (username, text1, book_id) values ('superman', 'I think Harry is the best character', 136);
-insert into post (username, text1, book_id) values ('joker', 'Voldemort is the best', 137);
-insert into post (username, text1, book_id) values ('batman', 'There was too much imagery in chapter 2', 25);
-insert into post (username, text1, book_id) values ('robin', 'I disliked chapter 5', 70);
-insert into post (username, text1, book_id) values ('superman', 'All for one and one for all', 68);
-insert into post (username, text1, book_id) values ('batman', 'I was shocked by Cedrics death', 134);
-insert into post (username, text1, book_id) values ('robin', 'This was a very insightful book', 130);
-insert into post (username, text1, book_id) values ('batman',  'Gandalf is my favorite character', 129);
-
-use book_club;
-insert into Likes values ('batman', 37, 'Like');
-insert into Likes values ('batman', 128, 'Dislike');
-insert into Likes values ('robin', 131, 'Like');
-insert into Likes values ('joker', 131, 'Dislike');
-insert into Likes values ('superman', 68, 'Like');
 
 INSERT INTO user VALUES('nchellani');
 INSERT INTO user VALUES('sgurtata');
@@ -262,6 +268,7 @@ INSERT INTO login VALUES('jreger','jr123','jreger@gmail.com','22');
 INSERT INTO login VALUES('rchellani','rc123','rchellani@gmail.com','22');
 INSERT INTO login VALUES('sqian','sq123','sqian@yahoo.com','22');
 INSERT INTO login VALUES('abrown','ab123','abrown@gmail.com','22');
+
 INSERT INTO Likes VALUES('nchellani','380','Like');
 INSERT INTO Likes VALUES('nchellani','367','Disike');
 INSERT INTO Likes VALUES('nchellani','37','Like');
@@ -271,7 +278,8 @@ INSERT INTO Likes VALUES('nchellani','413','Disike');
 INSERT INTO Likes VALUES('nchellani','411','Like');
 INSERT INTO Likes VALUES('sgurtata','367','Like');
 INSERT INTO Likes VALUES('sgurtata','393','Like');
-INSERT INTO Likes VALUES('sgurtata','402','Disike');
+INSERT INTO Likes VALUES('sgurtata','445','Disike');
+INSERT INTO Likes VALUES('sgurtata','402','Like');
 INSERT INTO Likes VALUES('sgurtata','404','Disike');
 INSERT INTO Likes VALUES('awang','368','Like');
 INSERT INTO Likes VALUES('awang','437','Disike');
@@ -351,6 +359,7 @@ INSERT INTO Likes VALUES('jmcdonald','397','Like');
 INSERT INTO Likes VALUES('jmcdonald','428','Disike');
 INSERT INTO Likes VALUES('jmcdonald','398','Like');
 INSERT INTO Likes VALUES('jmcdonald','429','Disike');
+INSERT INTO Likes VALUES('jmcdonald','445','Like');
 INSERT INTO Likes VALUES('jmcdonald','430','Disike');
 INSERT INTO Likes VALUES('czhou','393','Like');
 INSERT INTO Likes VALUES('czhou','367','Disike');
@@ -406,7 +415,6 @@ INSERT INTO Likes VALUES('sdhugana','412','Like');
 INSERT INTO Likes VALUES('sdhugana','418','Like');
 INSERT INTO Likes VALUES('sdhugana','422','Like');
 INSERT INTO Likes VALUES('kkhimani','367','Like');
-
 INSERT INTO Likes VALUES('kkhimani','393','Like');
 INSERT INTO Likes VALUES('kkhimani','404','Disike');
 INSERT INTO Likes VALUES('kkhimani','402','Like');
@@ -448,6 +456,7 @@ INSERT INTO Likes VALUES('scoheleach','440','Like');
 INSERT INTO Likes VALUES('sbhushan','367','Like');
 INSERT INTO Likes VALUES('sbhushan','378','Disike');
 INSERT INTO Likes VALUES('sbhushan','369','Like');
+INSERT INTO Likes VALUES('sbhushan','445','Disike');
 INSERT INTO Likes VALUES('sbhushan','373','Like');
 INSERT INTO Likes VALUES('sbhushan','400','Disike');
 INSERT INTO Likes VALUES('sbhushan','377','Like');
@@ -471,6 +480,7 @@ INSERT INTO Likes VALUES('jflores','380','Like');
 INSERT INTO Likes VALUES('jflores','388','Like');
 INSERT INTO Likes VALUES('jflores','396','Like');
 INSERT INTO Likes VALUES('jflores','397','Like');
+INSERT INTO Likes VALUES('jflores','445','Like');
 INSERT INTO Likes VALUES('jflores','402','Like');
 INSERT INTO Likes VALUES('jflores','404','Like');
 INSERT INTO Likes VALUES('jflores','407','Like');
@@ -490,6 +500,7 @@ INSERT INTO Likes VALUES('amendoza','391','Like');
 INSERT INTO Likes VALUES('amendoza','392','Like');
 INSERT INTO Likes VALUES('amendoza','396','Like');
 INSERT INTO Likes VALUES('amendoza','397','Like');
+INSERT INTO Likes VALUES('amendoza','445','Like');
 INSERT INTO Likes VALUES('amendoza','404','Like');
 INSERT INTO Likes VALUES('amendoza','407','Like');
 INSERT INTO Likes VALUES('amendoza','409','Like');
@@ -503,6 +514,7 @@ INSERT INTO Likes VALUES('vrathnam','372','Like');
 INSERT INTO Likes VALUES('vrathnam','369','Disike');
 INSERT INTO Likes VALUES('vrathnam','375','Like');
 INSERT INTO Likes VALUES('vrathnam','378','Disike');
+INSERT INTO Likes VALUES('vrathnam','445','Disike');
 INSERT INTO Likes VALUES('vrathnam','383','Like');
 INSERT INTO Likes VALUES('vrathnam','402','Disike');
 INSERT INTO Likes VALUES('vrathnam','386','Like');
@@ -532,6 +544,7 @@ INSERT INTO Likes VALUES('agrudzin','425','Like');
 INSERT INTO Likes VALUES('jreger','369','Like');
 INSERT INTO Likes VALUES('jreger','367','Disike');
 INSERT INTO Likes VALUES('jreger','389','Like');
+INSERT INTO Likes VALUES('jreger','445','Like');
 INSERT INTO Likes VALUES('jreger','397','Disike');
 INSERT INTO Likes VALUES('jreger','399','Like');
 INSERT INTO Likes VALUES('jreger','434','Disike');
@@ -555,6 +568,7 @@ INSERT INTO Likes VALUES('rchellani','393','Like');
 INSERT INTO Likes VALUES('rchellani','407','Disike');
 INSERT INTO Likes VALUES('rchellani','396','Like');
 INSERT INTO Likes VALUES('rchellani','409','Disike');
+INSERT INTO Likes VALUES('rchellani','445','Like');
 INSERT INTO Likes VALUES('rchellani','425','Disike');
 INSERT INTO Likes VALUES('rchellani','408','Like');
 INSERT INTO Likes VALUES('rchellani','426','Disike');
@@ -583,6 +597,7 @@ INSERT INTO Likes VALUES('sqian','383','Disike');
 INSERT INTO Likes VALUES('sqian','413','Like');
 INSERT INTO Likes VALUES('sqian','392','Disike');
 INSERT INTO Likes VALUES('sqian','414','Like');
+INSERT INTO Likes VALUES('sqian','445','Disike');
 INSERT INTO Likes VALUES('sqian','422','Like');
 INSERT INTO Likes VALUES('sqian','399','Disike');
 INSERT INTO Likes VALUES('sqian','408','Disike');
@@ -606,6 +621,7 @@ INSERT INTO Likes VALUES('abrown','411','Disike');
 INSERT INTO Likes VALUES('abrown','394','Like');
 INSERT INTO Likes VALUES('abrown','413','Disike');
 INSERT INTO Likes VALUES('abrown','397','Like');
+INSERT INTO Likes VALUES('abrown','445','Like');
 INSERT INTO Likes VALUES('abrown','403','Like');
 INSERT INTO Likes VALUES('abrown','407','Like');
 INSERT INTO Likes VALUES('abrown','408','Like');
@@ -614,7 +630,3 @@ INSERT INTO Likes VALUES('abrown','420','Like');
 INSERT INTO Likes VALUES('abrown','425','Like');
 INSERT INTO Likes VALUES('abrown','426','Like');
 INSERT INTO Likes VALUES('abrown','434','Like');
-
-#complex queries for demo
-(SELECT count(*), book_id FROM post WHERE username = 'batman' GROUP BY book_id) UNION (SELECT count(*), book_id FROM post WHERE username = 'robin' GROUP BY book_id);
-SELECT count(*), b.book_title FROM books b NATURAL JOIN Reads_ r WHERE b.author LIKE "%Rowling%" AND r.page_number >= 50 GROUP BY b.book_title; 
