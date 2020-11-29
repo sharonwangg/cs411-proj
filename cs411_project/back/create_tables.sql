@@ -27,7 +27,6 @@ PRIMARY KEY(username)
 CREATE TABLE Reads_(
 username varchar(10),
 book_id int,
-page_number int,
 FOREIGN KEY(book_id) REFERENCES books(book_id) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY(username) REFERENCES user(username) ON DELETE CASCADE  ON UPDATE CASCADE,
 PRIMARY KEY(username,book_id)
