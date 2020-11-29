@@ -74,46 +74,10 @@ FOREIGN KEY(book_id) REFERENCES books(book_id) ON DELETE CASCADE ON UPDATE CASCA
 PRIMARY KEY(post_id, book_id)
 );
 
-CREATE TABLE chats(
-chat_id int not null auto_increment,
-from_user varchar(50),
-dateTime datetime default NOW(),
-text1 varchar(250),
-group_id int,
-PRIMARY KEY(chat_id)
-);
-
 CREATE TABLE club(
 username varchar(10),
 club_id int not null,
 is_admin BOOLEAN default 0,
 PRIMARY KEY(username, club_id),
 FOREIGN KEY(username) REFERENCES user(username) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE timeline(
-club_id int, 
-dateTime datetime default NOW(),
-chapter varchar(50),
-timeline_id int AUTO_INCREMENT,
-PRIMARY KEY(timeline_id)
-);
-
-CREATE TABLE club_chats(
-chat_id int not null AUTO_INCREMENT,
-from_user varchar(50),
-dateTime datetime default NOW(),
-text1 varchar(250),
-club_id int,
-PRIMARY KEY(chat_id)
-);
-
-CREATE TABLE club_posts(
-username varchar(10),
-post_id int not null AUTO_INCREMENT,
-text1 varchar(250),
-dateTime datetime default NOW(),
-club_id int not null,
-FOREIGN KEY(username) REFERENCES user(username) ON DELETE CASCADE ON UPDATE CASCADE,
-PRIMARY KEY(post_id, club_id)
 );
