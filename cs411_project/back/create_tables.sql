@@ -44,24 +44,24 @@ PRIMARY KEY(username,book_id)
 
 CREATE TABLE Group_(
 username varchar(10),
-group_id int, 
+group_id int not null AUTO_INCREMENT, 
 book_id int,
 super_user varchar(50),
 FOREIGN KEY(book_id) REFERENCES books(book_id) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY(username) REFERENCES user(username) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY(super_user) REFERENCES user(username) ON DELETE CASCADE ON UPDATE CASCADE,
-PRIMARY KEY(username, group_id)
+PRIMARY KEY(group_id, username)
 );
 
 CREATE TABLE Event_(
 event_id int not null AUTO_INCREMENT, 
-dateTime datetime default NOW(),
+dateTime varchar (50),
 event_name varchar (50),
 event_description varchar(250),
 location varchar(100),
 group_id int,
 PRIMARY KEY(event_id)
-);
+);	
 
 CREATE TABLE post(
 username varchar(10),

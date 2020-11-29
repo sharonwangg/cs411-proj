@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block title %}MyGroup{% endblock %}
+
+{% block content %}
+
+<h2>Group Page</h2>
+<a href="/create_group">Create or Join New Group</a>
+<br>
+<br>
+{% for group in group_id %}
+    <a href="/group/{{group[0]}}">Group {{group[0]}}</a>
+{% endfor %} 
+
+
+{% endblock %}

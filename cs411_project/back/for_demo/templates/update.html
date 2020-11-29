@@ -8,7 +8,7 @@
     <h1 style="text-align: center">Update Task</h1>
 
     <div class="form">
-        <form action="/update/{{task[3]}}" method="POST">
+        <form action="/update/{{group_id}}/{{task[3]}}" method="POST">
             <input type="text" name="content" id="content" value="{{task[1]}}">
             <input type="submit" value="Update">
         </form>

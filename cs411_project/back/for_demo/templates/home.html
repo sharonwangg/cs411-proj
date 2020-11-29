@@ -32,14 +32,6 @@
                     <td>{{ task[1] }}</td>
                     <td>{{ task[2] }}</td>
                     <td>{{ task[4] }}</td>
-                    {% if task[0] == usr %}
-                    <td>
-                        <a href="/delete/{{task[3]}}">Delete</a>
-                        <br>
-                        <a href="/update/{{task[3]}}">Update</a>
-                    </td>
-                    {% endif %}
-                    
                 </tr>
             {% endfor %}
         </table>
@@ -52,13 +44,32 @@
        </form>
        <br>
        <br>
-    <div class="form">
-        <form action="/" method="POST">
-            <input type="text" placeholder="Post text" name="content" id="content">
-            <input type="text" placeholder="Book title" name="book1" id="book1">
-            <input type="submit" value="Add Post">
-        </form>
-    </div>
+
+       <h3>Events</h3>
+       <table>
+        <tr>
+            <th>Date</th>
+            <th>Event Name</th>
+            <th>Description</th>
+            <th>Location</th>
+        </tr>
+        {% for event in events %}
+            <tr>
+                <td>{{ event[1] }}</td>
+                <td>{{ event[2] }}</td>
+                <td>{{ event[3] }}</td>
+                <td>{{ event[4] }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+
+        <br>
+            <form method="post" action="/search_event/{{group_id}}" 
+            >
+                <input type="text" placeholder="Search Events" name="event">
+                <button type="submit"><i class="fa fa-search"></i>
+                </button>
+            </form>
 </div>
 
 
