@@ -8,7 +8,7 @@
     <h1 style="text-align: center">Update Event</h1>
 
     <div class="form">
-        <form action="/update_event/{{task[0]}}" method="POST">
+        <form action="/update_event/{{group_id}}/{{task[0]}}" method="POST">
             <label>Event Name:</label>
             <input type="text" placeholder="Event Name" name="ename" id="ename" value="{{task[2]}}">
             <br>

@@ -1,80 +1,130 @@
-{% extends 'layout.html' %}
-
-{% block title %}MyGroup{% endblock %}
+{% extends 'group_router.html' %}
 
 {% block content %}
 <h2>Group Page</h2>
+<a href="/create_group">Create or Join New Group</a>
 <h2>Group ID: {{ group_id }}</h2>
 
 	<body>
-        <h4>{{book}} by {{author}}</h4>
-        <h4>Group Members</h4>
+        {% if msg != null %}
+        <p>{{ msg }}</p>
+        {% endif %}
+
+        <h2>{{book}} by {{author}}</h2>
+        <h3>Group Members</h3>
         {% for member in members %}
         <td>{{ member[0] }}</td>
         <br>
         {% endfor %}
-        <h4>Events</h4>
-        {% if msg != null %}
-            <p>{{ msg }}</p>
-        {% endif %}
-        <table>
-            <tr>
-                <th>Date</th>
-                <th>Event Name</th>
-                <th>Description</th>
-                <th>Location</th>
-            </tr>
-            {% for task in tasks %}
-                <tr>
-                    <td>{{ task[1] }}</td>
-                    <td>{{ task[2] }}</td>
-                    <td>{{ task[3] }}</td>
-                    <td>{{ task[4] }}</td>
-                    <td>
-                        <a href="/delete_event/{{task[0]}}">Delete</a>
-                        <br>
-                        <a href="/update_event/{{task[0]}}">Update</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-            
         <br>
-        <form method="post" action="/search_event" 
-        >
-            <input type="text" placeholder="Search Events" name="event">
-            <button type="submit"><i class="fa fa-search"></i>
-            </button>
-        </form>
+
+        <h3>Forum Posts</h3>
+            {% if pmsg != null %}
+            <p>{{ pmsg }}</p>
+            {% endif %}
+            <table>
+                <tr>
+                    <th>Username</th>
+                    <th>Post</th>
+                    <th>Date Posted</th>
+                    <th>Book Title</th>
+                </tr>
+                {% for post in posts %}
+                    <tr>
+                        <td>{{ post[0] }}</td>
+                        <td>{{ post[1] }}</td>
+                        <td>{{ post[2] }}</td>
+                        <td>{{ post[4] }}</td>
+                        {% if post[0] == usr %}
+                            <td>
+                                <a href="/delete/{{group_id}}/{{post[3]}}">Delete</a>
+                                <br>
+                                <a href="/update/{{group_id}}/{{post[3]}}">Update</a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+            <br>
+            <form method="post" action="/search_group_posts/{{group_id}}" 
+            >
+                <input type="text" placeholder="Search Posts" name="book">
+                <button type="submit"><i class="fa fa-search"></i>
+                </button>
+            </form>
+            <br>
+            <br>
+            <div class="form">
+                <form action="/post_group_posts/{{group_id}}" method="POST">
+                    <input type="text" placeholder="Post text" name="content" id="content">
+                    <input type="text" placeholder="Book title" name="book1" id="book1">
+                    <input type="submit" value="Add Post">
+                </form>
+            </div>
+
         <br>
         <br>
 
-        <div class="form">
-            <form action="/group" method="POST">
-                <h4>Create Event</h4>
-                <label>Event Name:</label>
-                <input type="text" placeholder="Event Name" name="ename" id="ename">
-                <br>
-                <label>Date:</label>
-                <input type="date" placeholder="Date" name="date" id="date">
-                <br>
-                <label>Time:</label>
-                <input type="time" placeholder="Time" name="time" id="time">
-                <br>
-                <label>Description:</label>
-                <input type="text" placeholder="Description" name="desc" id="desc">
-                <br>
-                <label>Location:</label>
-                <input type="text" placeholder="Location" name="loc" id="loc">
-                <br>
-                <input type="submit" value="Create Event">
+        <h3>Events</h3>
+            {% if emsg != null %}
+            <p>{{ emsg }}</p>
+            {% endif %}
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Event Name</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                </tr>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task[1] }}</td>
+                        <td>{{ task[2] }}</td>
+                        <td>{{ task[3] }}</td>
+                        <td>{{ task[4] }}</td>
+                            <td>
+                                <a href="/delete_event/{{group_id}}/{{task[0]}}">Delete</a>
+                                <br>
+                                <a href="/update_event/{{group_id}}/{{task[0]}}">Update</a>
+                            </td>
+                    </tr>
+                {% endfor %}
+            </table>
+                
+            <br>
+            <form method="post" action="/search_event/{{group_id}}" 
+            >
+                <input type="text" placeholder="Search Events" name="event">
+                <button type="submit"><i class="fa fa-search"></i>
+                </button>
             </form>
-        </div>
-        <br>
-        <br>
-        <form action="/leave_group/{{group_id}}">
-            <input type="submit" value= "Leave Group" />
-        </form>
-		</div>
+
+            <div class="form">
+                <form action="/group/{{group_id}}" method="POST">
+                    <h4>Create Event</h4>
+                    <label>Event Name:</label>
+                    <input type="text" placeholder="Event Name" name="ename" id="ename">
+                    <br>
+                    <label>Date:</label>
+                    <input type="date" placeholder="Date" name="date" id="date">
+                    <br>
+                    <label>Time:</label>
+                    <input type="time" placeholder="Time" name="time" id="time">
+                    <br>
+                    <label>Description:</label>
+                    <input type="text" placeholder="Description" name="desc" id="desc">
+                    <br>
+                    <label>Location:</label>
+                    <input type="text" placeholder="Location" name="loc" id="loc">
+                    <br>
+                    <input type="submit" value="Create Event">
+                </form>
+            </div>
+            <br>
+            <br>
+            <form action="/leave_group/{{group_id}}">
+                <input type="submit" value= "Leave Group" />
+            </form>
+		    </div>
 	</body>
 {% endblock %}
