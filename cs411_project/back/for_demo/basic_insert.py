@@ -860,7 +860,8 @@ def search_e():
     if usr == val[3]:
         admin = 1
     else:
-        admin = 0    
+        admin = 0
+    members = get_group_members(group_id)    
     if request.method == "POST":
         value = request.form['event']
         returns = search_events(value)
