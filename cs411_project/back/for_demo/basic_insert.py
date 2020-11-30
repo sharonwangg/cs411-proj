@@ -378,7 +378,7 @@ def add_event(date, e_name, e_desc, e_loc, book_id, host):
 
     try:
         with connection.cursor() as cursor:
-            sql = "INSERT INTO `Event_` (`dateTime`,`event_name`,`event_description`,`location`,`book_id`,`host`) VALUES(%s,%s,%s,%s,%s,%s)"
+            sql = "INSERT INTO `Event_` (`dateTime`,`event_name`,`event_description`,`location`,`book_id`,`host1`) VALUES(%s,%s,%s,%s,%s,%s)"
             cursor.execute(sql, (date, e_name, e_desc, e_loc, book_id, host))
         connection.commit()
     finally:

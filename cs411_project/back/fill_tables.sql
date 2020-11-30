@@ -688,3 +688,11 @@ INSERT INTO post (username, text1, book_id) VALUES ('scoheleach', 'I found Meg t
 INSERT INTO post (username, text1, book_id) VALUES ('sbhushan', 'I liked how much Jo grew from Beth’s death, and that it served a significant purpose rather than just being a randomly inserted plot point. Losing her closest sibling instilled a sense of purpose in her that helped her for the rest of her life.', '380');
 INSERT INTO post (username, text1, book_id) VALUES ('mphillips', 'Despite her vanity and selfishness, I really liked Amy as a character. Her insistence on pursuing art and hardworking nature makes her more than her flaws, and perhaps the most nuanced of all the March sisters.', '380');
 INSERT INTO post (username, text1, book_id) VALUES ('nchellani', 'Jo was my favorite March sister; I liked that she was a highly flawed yet independent, likeable character. Her transformation was also the most drastic, and I loved that her relationship with her sisters influenced her so positively.', '380');
+
+INSERT INTO Event_ VALUES(2, '2020-11-29 14:50', 'New User Welcome','Welcoming all new users to ReadIt!', 'ReadIt', 393, 'rchellani');
+INSERT INTO Event_ VALUES(3, '2020-11-29 14:50', 'New User Welcome','Welcoming all new users to ReadIt!', 'ReadIt', 380, 'rchellani');
+INSERT INTO Event_ VALUES(4, '2020-11-29 14:50', 'New User Welcome','Welcoming all new users to ReadIt!', 'ReadIt', 388, 'rchellani');
+INSERT INTO Event_ VALUES(5, '2020-12-05 12:30', 'Chapter 1 Discussion','Discussing chapter one of Anne!', 'ReadIt', 388, 'nchellani'); 
+INSERT INTO Event_ VALUES(6, '2020-12-12 12:30', 'Chapter 2 Discussion','Discussing chapter two of Anne!', 'ReadIt', 388, 'nchellani'); 
+INSERT INTO Event_ VALUES(7, '2020-12-19 12:30', 'Chapter 3 Discussion','Discussing chapter three of Anne!', 'ReadIt', 388, 'nchellani'); 
+INSERT INTO Event_ VALUES(8, '2020-12-26 12:30', 'Chapter 4 Discussion: Halfway point','Discussing chapter three of Anne and celebrating halfway!', 'ReadIt', 388, 'nchellani');
