@@ -27,7 +27,6 @@ PRIMARY KEY(username)
 CREATE TABLE Reads_(
 username varchar(10),
 book_id int,
-page_number int,
 FOREIGN KEY(book_id) REFERENCES books(book_id) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY(username) REFERENCES user(username) ON DELETE CASCADE  ON UPDATE CASCADE,
 PRIMARY KEY(username,book_id)
@@ -42,25 +41,17 @@ FOREIGN KEY(username) REFERENCES user(username) ON DELETE CASCADE  ON UPDATE CAS
 PRIMARY KEY(username,book_id)
 );
 
-CREATE TABLE Group_(
-username varchar(10),
-group_id int not null AUTO_INCREMENT, 
-book_id int,
-super_user varchar(50),
-FOREIGN KEY(book_id) REFERENCES books(book_id) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY(username) REFERENCES user(username) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY(super_user) REFERENCES user(username) ON DELETE CASCADE ON UPDATE CASCADE,
-PRIMARY KEY(group_id, username)
-);
-
 CREATE TABLE Event_(
 event_id int not null AUTO_INCREMENT, 
 dateTime varchar (50),
 event_name varchar (50),
 event_description varchar(250),
 location varchar(100),
-group_id int,
-PRIMARY KEY(event_id)
+book_id int,
+host1 varchar(10),
+PRIMARY KEY(event_id),
+FOREIGN KEY(host1) REFERENCES user(username),
+FOREIGN KEY(book_id) REFERENCES books(book_id) ON DELETE CASCADE ON UPDATE CASCADE
 );	
 
 CREATE TABLE post(

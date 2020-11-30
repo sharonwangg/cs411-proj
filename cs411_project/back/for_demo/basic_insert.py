@@ -23,7 +23,7 @@ app.secret_key = 'Team105'
 def log_me_in(username,password):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -41,7 +41,7 @@ def log_me_in(username,password):
 def show_post():
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -58,10 +58,10 @@ def show_post():
         connection.close()
         return returni
 
-def get_posts(g_id):
+def get_posts(b_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -71,7 +71,7 @@ def get_posts(g_id):
         with connection.cursor() as cur:
 
 
-            cur.execute('Select distinct p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b join Group_ g on g.book_id = b.book_id where g.group_id = %s order by dateTime desc',(g_id))
+            cur.execute('Select distinct p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b where b.book_id = %s order by dateTime desc',(b_id))
             rows = cur.fetchall()
             returni=rows
     finally:
@@ -81,7 +81,7 @@ def get_posts(g_id):
 def create_user(username,password,email,age):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     value=''
@@ -107,7 +107,7 @@ def create_user(username,password,email,age):
 def create_post(username,text,date,book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -122,7 +122,7 @@ def create_post(username,text,date,book_id):
 def delete_record(value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     print('a')
 
@@ -141,7 +141,7 @@ def delete_record(value):
 def search_me(value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -159,11 +159,11 @@ def search_me(value):
         connection.close()
         return returni
 
-
-def search_g_posts(value,g_id):
+#fix this
+def search_g_posts(value,b_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -171,7 +171,7 @@ def search_g_posts(value,g_id):
         with connection.cursor() as cur:
 
 
-            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b join Group_ g on g.book_id = b.book_id where (p.text1 like %s or p.username like %s or b.book_title like %s or b.author like %s) and g.group_id = %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%", "%" + value + "%", g_id))
+            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b where (p.text1 like %s or p.username like %s or b.book_title like %s or b.author like %s) and b.book_id = %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%", "%" + value + "%", b_id))
             rows = cur.fetchall()
             returni=rows
 
@@ -185,7 +185,7 @@ def search_g_posts(value,g_id):
 def search_book(value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -206,7 +206,7 @@ def search_book(value):
 def book_id_to_name(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -227,7 +227,7 @@ def book_id_to_name(book_id):
 def edit_helper(post_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -249,7 +249,7 @@ def edit_helper(post_id):
 def edit(post_id,value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -264,7 +264,7 @@ def edit(post_id,value):
 def can_delete(id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=''
     try:
@@ -283,7 +283,7 @@ def can_delete(id):
 def show_user(username):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -298,61 +298,16 @@ def show_user(username):
         connection.close()
         return returni
 
-
-def start_reading(username, book_id, page_number):
+def start_reading(username, book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
         with connection.cursor() as cur:
-            sql = "INSERT INTO `Reads` (`username, book_id, page_number`) VALUES (%s, %s, %s)"
-            cur.execute(sql, (username, book_id, page_number))
-        connection.commit()
-    finally:
-        connection.close()
-
-
-def update_page_number(username, book_id, page_number):
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='cs411',
-                                 db='book_club')
-
-    try:
-        with connection.cursor() as cur:
-            sql = "UPDATE `Reads` SET page_number = %s WHERE username = %s AND book_id = %s"
-            cur.execute(sql, (page_number, username, book_id))
-        connection.commit()
-    finally:
-        connection.close()
-
-
-def leave_group(username, group_id):
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='cs411',
-                                 db='book_club')
-
-    try:
-        with connection.cursor() as cur:
-            sql = "DELETE FROM `Group_` WHERE username = %s AND group_id = %s"
-            cur.execute(sql, (username, group_id))
-        connection.commit()
-    finally:
-        connection.close()
-
-def start_reading(username, book_id, page_number):
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='cs411',
-                                 db='book_club')
-
-    try:
-        with connection.cursor() as cur:
-            sql = "INSERT INTO `Reads` (`username, book_id, page_number`) VALUES (%s, %s, %s)"
-            cur.execute(sql, (username, book_id, page_number))
+            sql = "INSERT INTO `Reads_` (`username, book_id) VALUES (%s, %s)"
+            cur.execute(sql, (username, book_id))
         connection.commit()
     finally:
         connection.close()
@@ -361,7 +316,7 @@ def start_reading(username, book_id, page_number):
 def stop_reading(username, book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -375,7 +330,7 @@ def stop_reading(username, book_id):
 def like_helper(user,bookid):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -393,7 +348,7 @@ def like_helper(user,bookid):
 def like(user, bookid, like=True):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -414,33 +369,30 @@ def like(user, bookid, like=True):
     finally:
         connection.close()
 
-
-#book club functions
-
 #event functions are available to all users
-def add_event(date, e_name, e_desc, e_loc, group_id):
+def add_event(date, e_name, e_desc, e_loc, book_id, host):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
         with connection.cursor() as cursor:
-            sql = "INSERT INTO `Event_` (`dateTime`,`event_name`,`event_description`,`location`,`group_id`) VALUES(%s,%s,%s,%s,%s)"
-            cursor.execute(sql, (date, e_name, e_desc, e_loc, group_id))
+            sql = "INSERT INTO `Event_` (`dateTime`,`event_name`,`event_description`,`location`,`book_id`,`host`) VALUES(%s,%s,%s,%s,%s,%s)"
+            cursor.execute(sql, (date, e_name, e_desc, e_loc, book_id, host))
         connection.commit()
     finally:
         connection.close()
 
-def search_events(value,g_id):
+def search_events(value,b_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try: 
         with connection.cursor() as cur:   
-            cur.execute('Select event_id, dateTime, event_name, event_description, location from Event_ where (event_name like %s or event_description like %s or location like %s) and group_id = %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%", g_id)) 
+            cur.execute('Select event_id, dateTime, event_name, event_description, location from `Event_` where (event_name like %s or event_description like %s or location like %s) and book_id = %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%", b_id)) 
             rows = cur.fetchall()
             returni=rows
 
@@ -450,10 +402,9 @@ def search_events(value,g_id):
 
 
 def delete_event(ev_id):
-    #check if superuser of group, then allow delete or not delete - need to rework book_club table to select superuser
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -467,12 +418,12 @@ def delete_event(ev_id):
 def edit_helper_event(ev_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try: 
         with connection.cursor() as cur:
-            cur.execute('Select event_id, dateTime, event_name, event_description, location from Event_ where event_id=%s', ev_id) 
+            cur.execute('Select `event_id`, `dateTime`, `event_name`, `event_description`, `location` from `Event_` where event_id=%s', ev_id) 
             rows = cur.fetchone()
             returni=rows
     finally:
@@ -482,71 +433,13 @@ def edit_helper_event(ev_id):
 def edit_event(date, loc, ev_name, ev_desc, ev_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Event_ SET dateTime=%s, location=%s, event_name=%s, event_description=%s WHERE event_id=%s"
+            sql = "UPDATE `Event_` SET dateTime=%s, location=%s, event_name=%s, event_description=%s WHERE event_id=%s"
             cursor.execute(sql, (date, loc, ev_name, ev_desc, str(ev_id)))
-        connection.commit()
-    finally:
-        connection.close()
-
-
-#timeline functions are only available to superusers
-def add_timeline_event(date, chap):
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='cs411',
-                                 db='book_club')
-    try:
-        with connection.cursor() as cursor:
-            sql = "INSERT INTO `timeline` (dateTime, chapter) VALUES(%s,%s)"
-            cursor.execute(sql, (date, chap))
-        connection.commit()
-    finally:
-        connection.close()
-
-def delete_timeline_event(time_id):
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='cs411',
-                                 db='book_club')
-
-    try:
-        with connection.cursor() as cursor:
-            sql = "DELETE FROM timeline WHERE timeline_id=(%s)"
-            cursor.execute(sql, (time_id))
-        connection.commit()
-    finally:
-        connection.close()
-
-def edit_helper_timeline(time_id):
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='cs411',
-                                 db='book_club')
-    returni=[]
-    try: 
-        with connection.cursor() as cur:
-            cur.execute('Select dateTime, chapter from timeline where timeline_id=%s', time_id) 
-            rows = cur.fetchone()
-            returni=rows
-    finally:
-        connection.close()
-        return returni
-
-def edit_timeline(date, chap, timeid):
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='cs411',
-                                 db='book_club')
-
-    try:
-        with connection.cursor() as cursor:
-            sql = "UPDATE Event_ SET dateTime=%s, chapter=%s, WHERE timeline_id=%s"
-            cursor.execute(sql, (date, chap, str(timeid)))
         connection.commit()
     finally:
         connection.close()
@@ -555,14 +448,14 @@ def edit_timeline(date, chap, timeid):
 def get_groups(username):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
     try:
 
         with connection.cursor() as cur:
-            cur.execute('Select group_id from Group_ where username=%s', username)
+            cur.execute('Select book_id from `Reads_` where username=%s', username)
             rows = cur.fetchall()
             returni=rows
     finally:
@@ -572,86 +465,58 @@ def get_groups(username):
 def get_group(username):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
     try:
 
         with connection.cursor() as cur:
-            cur.execute('Select username,group_id,book_id,super_user from Group_ where username=%s', username)
+            cur.execute('Select username,book_id, from `Reads_` where username=%s', username)
             rows = cur.fetchone()
             returni=rows
     finally:
         connection.close()
         return returni
 
-def new_group(username,book_id,super_user):
+def get_group_members(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
-                                 db='book_club')
-
-    try:
-        with connection.cursor() as cursor:
-            sql = "INSERT INTO `Group_` (`username`,`book_id`,`super_user`) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (username,book_id,super_user))
-        connection.commit()
-    finally:
-        connection.close()
-
-def get_group_members(group_id):
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
     try:
 
         with connection.cursor() as cur:
-            cur.execute('Select username from Group_ where group_id=%s', group_id)
+            cur.execute('Select username from `Reads_` where book_id=%s', book_id)
             rows = cur.fetchall()
             returni=rows
     finally:
         connection.close()
         return returni
 
-def get_group_byid(group_id):
+def get_group_byid(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
     try:
 
         with connection.cursor() as cur:
-            cur.execute('select * from Group_ where group_id = %s',group_id)
+            cur.execute('select * from `Reads_` where book_id = %s',book_id)
             rows = cur.fetchone()
             returni=rows
     finally:
         connection.close()
         return returni  
 
-def add_to_group(username,group_id,book_id,super_user):
+def show_events(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
-                                 db='book_club')
-
-    try:
-        with connection.cursor() as cursor:
-            sql = "INSERT INTO `Group_` (`username`,`group_id`,`book_id`,`super_user`) VALUES (%s, %s, %s, %s)"
-            cursor.execute(sql, (username,group_id,book_id,super_user))
-        connection.commit()
-    finally:
-        connection.close()
-
-def show_events(group_id):
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -661,7 +526,7 @@ def show_events(group_id):
         with connection.cursor() as cur:
 
 
-            cur.execute('Select * from Event_ where group_id = %s order by dateTime desc', group_id)
+            cur.execute('Select * from `Event_` where book_id = %s order by dateTime desc', book_id)
             rows = cur.fetchall()
             returni=rows
     finally:
@@ -807,37 +672,27 @@ def search():
 def search_group_posts(g_id):
     usr = session['username']
     group = get_group_byid(g_id)
-    book_id = group[2]
-    admin = group[3]
+    book_id = g_id
     book = book_id_to_name(book_id)
     events = show_events(g_id)
-    if usr == admin:
-        admin = 1
-    else:
-        admin = 0
     members = get_group_members(g_id)
     posts = get_posts(g_id)
     if request.method == "POST":
         value = request.form['book']
         posts=search_g_posts(value,g_id)
         if value == "" or len(posts) == 0:
-            return render_template('group.html', usr = usr, group_id = g_id, book = book[0], author = book[1], admin = admin, posts = posts, tasks = events, members = members, pmsg='No records for "' + value + '"')
+            return render_template('group.html', usr = usr, group_id = g_id, book = book[0], author = book[1], posts = posts, tasks = events, members = members, pmsg='No records for "' + value + '"')
         else:
-            return render_template('group.html',  usr = usr, group_id = g_id, book = book[0], author = book[1], admin = admin, posts = posts, tasks = events, members = members, pmsg='Records returned by search for "' + value + '"')
+            return render_template('group.html',  usr = usr, group_id = g_id, book = book[0], author = book[1], posts = posts, tasks = events, members = members, pmsg='Records returned by search for "' + value + '"')
 
 
 @app.route('/post_group_posts/<int:g_id>', methods=['GET', 'POST'])
 def post_group_posts(g_id):
     usr = session['username']
     group = get_group_byid(g_id)
-    book_id = group[2]
-    admin = group[3]
+    book_id = group[1]
     book = book_id_to_name(book_id)
     events = show_events(g_id)
-    if usr == admin:
-        admin = 1
-    else:
-        admin = 0
     members = get_group_members(g_id)
     posts = get_posts(g_id)
     if request.method == 'POST':
@@ -845,7 +700,7 @@ def post_group_posts(g_id):
         book_content = request.form['book1']
         posts = get_posts(g_id)
         if task_content == "" or book_content == "":
-            return render_template('group.html', usr = usr, group_id = g_id, book = book[0], author = book[1], admin = admin, posts = posts, tasks = events, members = members, pmsg='Post could not be added, please enter Post text and Book title')
+            return render_template('group.html', usr = usr, group_id = g_id, book = book[0], author = book[1], posts = posts, tasks = events, members = members, pmsg='Post could not be added, please enter Post text and Book title')
         book_ins = search_book(book_content)
         try:
             print(datetime.now())
@@ -855,7 +710,7 @@ def post_group_posts(g_id):
         except:
             return 'There was an issue adding your data'
 
-
+#this will be broken
 @app.route('/create_group/', methods=['GET', 'POST'])
 def create_group():
     message = 'Please Enter the group name and book'
@@ -870,6 +725,7 @@ def create_group():
 
     return render_template('create_group.html', message=message)
 
+# this will be broken 
 @app.route('/join_group', methods=['GET', 'POST'])
 def join_group():
     message = 'Please Enter the group id'
@@ -899,14 +755,9 @@ def group_router():
 def group(g_id):
     usr = session['username']
     group = get_group_byid(g_id)
-    book_id = group[2]
-    admin = group[3]
+    book_id = group[1]
     book = book_id_to_name(book_id)
     events = show_events(g_id)
-    if usr == admin:
-        admin = 1
-    else:
-        admin = 0
     members = get_group_members(g_id)  
     posts = get_posts(g_id)
     print(posts) 
@@ -919,10 +770,10 @@ def group(g_id):
         e_date = date + " " + time  
         events = show_events(g_id)
         if e_name == "" or date == "" or time == "" or e_desc == "" or e_loc == "":
-            return render_template('group.html',  usr = usr, group_id = g_id, book = book[0], author = book[1], admin = admin, posts = posts, tasks = events, members = members, emsg='Event could not be added, please enter valid Event data')
-        add_event(e_date, e_name, e_desc, e_loc, g_id)
+            return render_template('group.html',  usr = usr, group_id = g_id, book = book[0], author = book[1], posts = posts, tasks = events, members = members, emsg='Event could not be added, please enter valid Event data')
+        add_event(e_date, e_name, e_desc, e_loc, g_id, usr)
         return redirect(url_for('group', g_id=g_id))
-    return render_template('group.html',  usr = usr, group_id = g_id, book = book[0], author = book[1], admin = admin, posts = posts, tasks = events, members = members)
+    return render_template('group.html',  usr = usr, group_id = g_id, book = book[0], author = book[1], posts = posts, tasks = events, members = members)
 
 @app.route('/delete_event/<int:g_id>/<int:e_id>')
 def delete_e(g_id,e_id):
@@ -935,7 +786,7 @@ def delete_e(g_id,e_id):
         delete_event(e_id)
         return redirect(url_for('group', g_id=g_id))
     except:
-        return 'There was a problem deleting that task'
+        return 'There was a problem deleting that event'
 
 @app.route('/update_event/<int:g_id>/<int:e_id>', methods=['GET', 'POST'])
 def update_e(g_id,e_id):
@@ -958,7 +809,7 @@ def update_e(g_id,e_id):
             edit_event(e_date, loc, ev_name, ev_desc, e_id)
             return redirect(url_for('group', g_id=g_id))
         except:
-            return 'There was an issue updating your task'
+            return 'There was an issue updating your event'
 
     else:
         return render_template('update_event.html', group_id = g_id, task=value)
@@ -967,23 +818,18 @@ def update_e(g_id,e_id):
 def search_e(g_id):
     usr = session['username']
     group = get_group_byid(g_id)
-    book_id = group[2]
-    admin = group[3]
+    book_id = group[1]
     book = book_id_to_name(book_id)
     events = show_events(g_id)
-    if usr == admin:
-        admin = 1
-    else:
-        admin = 0
     members = get_group_members(g_id)
     posts = get_posts(g_id)    
     if request.method == "POST":
         value = request.form['event']
         returns = search_events(value,g_id)
         if value == "" or len(returns) == 0:
-            return render_template('group.html',  usr = usr, group_id = g_id, book = book[0], author = book[1], admin = admin, posts = posts, tasks = returns, members = members, emsg='No records for "' + value + '"')
+            return render_template('group.html',  usr = usr, group_id = g_id, book = book[0], author = book[1],  posts = posts, tasks = returns, members = members, emsg='No records for "' + value + '"')
         else:
-            return render_template('group.html',  usr = usr, group_id = g_id, book = book[0], author = book[1], admin = admin, posts = posts, tasks = returns, members = members, emsg='Records returned by search for "' + value + '"')
+            return render_template('group.html',  usr = usr, group_id = g_id, book = book[0], author = book[1],  posts = posts, tasks = returns, members = members, emsg='Records returned by search for "' + value + '"')
 
 @app.route('/leave_group/<int:g_id>')
 def leave(g_id):
@@ -991,7 +837,7 @@ def leave(g_id):
     if(val is None):
         return redirect(url_for('create_group'))
 
-    leave_group(session['username'], g_id)
+    stop_reading(session['username'], g_id)
     return redirect('/group_router')
 
 if __name__ == "__main__":
