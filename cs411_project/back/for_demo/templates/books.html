@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block title %}Books{% endblock %}
+
+{% block content %}
+<h2>Book Page</h2>
+<body>
+    {% if msg != null %}
+        <p>{{ msg }}</p>
+    {% endif %}
+    <form method="post" action="/books">
+    <table>
+        <tr>
+            <th>Book Name</th>
+            <th>Author</th>
+            <th>Like/Dislike</th>
+        </tr>
+        {% for book in books %}
+            <tr>
+                <td>{{ book[0] }}</td>
+                <td>{{ book[1] }}</td>
+                <td>
+            <input type="radio" id="{{book[0]+book[1]}}"  class="fa fa-thumbs-up" value="1" name="{{book[0]+book[1]}}">
+            <input type="radio" id="{{book[0]+book[1]}}"  class="fa fa-thumbs-up" value="0" checked="checked" name="{{book[0]+book[1]}}">
+            <input type="radio" id="{{book[0]+book[1]}}"  class="fa fa-thumbs-down" value="-1" name="{{book[0]+book[1]}}">
+
+                   
+                </td>
+                <td>
+                    <a href="/join_group/{{book[2]}}">Start Reading</a>
+                    <br>
+                    <a href="/leave_group/{{book[2]}}">Stop Reading</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+        <button type="submit" value="submit">Submit
+                </button>
+        </form>
+</body>
+
+{% endblock %}  
