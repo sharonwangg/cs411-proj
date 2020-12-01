@@ -20,6 +20,16 @@
     <button type="submit">Send</button>
 </form>
 
+<form id="book_selection">
+    <label for="books">Choose a book to read with your book club:</label>
+    <select id="books" name ="books">
+        {% for book in books %}
+            <option value= "{{ book[3] }}">{{ book[0] }} (by {{ book[1] }})</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Submit">
+</form>
+
 <h3>Members</h3>
 <ul>
     {% for member in room_members %}
@@ -28,8 +38,7 @@
 </ul>
 
 {% block body %}
-    <h2>Music</h2>
-    <p>Music:</p>
+    <h3>Audiobook Files</h3>
     <audio controls="controls" autoplay="autoplay"></audio>
     <ul>
     {% for song in songs %}

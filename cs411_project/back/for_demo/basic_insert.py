@@ -32,7 +32,7 @@ socketio = SocketIO(app)
 def in_like_table():
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=''
     try:
@@ -53,7 +53,7 @@ def in_like_table():
 def log_me_in(username,password):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -71,7 +71,7 @@ def log_me_in(username,password):
 def show_post():
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -91,7 +91,7 @@ def show_post():
 def get_posts(b_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -111,7 +111,7 @@ def get_posts(b_id):
 def create_user(username,password,email,age):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     value=''
@@ -137,7 +137,7 @@ def create_user(username,password,email,age):
 def create_post(username,text,date,book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -152,7 +152,7 @@ def create_post(username,text,date,book_id):
 def delete_record(value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     print('a')
 
@@ -171,7 +171,7 @@ def delete_record(value):
 def search_me(value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -193,7 +193,7 @@ def search_me(value):
 def search_g_posts(value,b_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -215,7 +215,7 @@ def search_g_posts(value,b_id):
 def search_book(value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -236,7 +236,7 @@ def search_book(value):
 def book_id_to_name(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -257,7 +257,7 @@ def book_id_to_name(book_id):
 def get_all_books():
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -265,7 +265,7 @@ def get_all_books():
         with connection.cursor() as cur:
 
 
-            cur.execute('Select book_title, author, book_id from books')
+            cur.execute('Select book_title, author, book_id from books order by book_title')
             rows = cur.fetchall()
             returni=rows
 
@@ -277,7 +277,7 @@ def get_all_books():
 def max_book_id():
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -297,7 +297,7 @@ def max_book_id():
 def edit_helper(post_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -319,7 +319,7 @@ def edit_helper(post_id):
 def edit(post_id,value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -334,7 +334,7 @@ def edit(post_id,value):
 def can_delete(id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=''
     try:
@@ -353,7 +353,7 @@ def can_delete(id):
 def show_user(username):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -371,7 +371,7 @@ def show_user(username):
 def start_reading(username, book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -386,7 +386,7 @@ def start_reading(username, book_id):
 def stop_reading(username, book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -400,7 +400,7 @@ def stop_reading(username, book_id):
 def stop_reading_check(username, book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -416,7 +416,7 @@ def stop_reading_check(username, book_id):
 def like_helper(user,bookid):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -434,7 +434,7 @@ def like_helper(user,bookid):
 def get_like_dislike(user,flag):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     if flag=="Like":
@@ -463,7 +463,7 @@ def get_like_dislike(user,flag):
 def get_book_ids():
     connection = pymysql.connect(host='localhost',
                                 user='root',
-                                password='cs411',
+                                password='m8y7b6v5',
                                 db='book_club')
 
     # select book_ids from Books table
@@ -487,7 +487,7 @@ def get_book_ids():
 def like(user, bookid, like):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     print(user, bookid, like)
 
@@ -518,7 +518,7 @@ def like(user, bookid, like):
 def add_event(date, e_name, e_desc, e_loc, book_id, host):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -532,7 +532,7 @@ def add_event(date, e_name, e_desc, e_loc, book_id, host):
 def search_events(value,b_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try: 
@@ -549,7 +549,7 @@ def search_events(value,b_id):
 def delete_event(ev_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -563,7 +563,7 @@ def delete_event(ev_id):
 def edit_helper_event(ev_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try: 
@@ -578,7 +578,7 @@ def edit_helper_event(ev_id):
 def edit_event(date, loc, ev_name, ev_desc, ev_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -593,7 +593,7 @@ def edit_event(date, loc, ev_name, ev_desc, ev_id):
 def get_groups(username):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
@@ -610,7 +610,7 @@ def get_groups(username):
 def get_group(username):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
@@ -627,7 +627,7 @@ def get_group(username):
 def get_group_members(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
@@ -644,7 +644,7 @@ def get_group_members(book_id):
 def get_group_byid(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
@@ -661,7 +661,7 @@ def get_group_byid(book_id):
 def show_events(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -1051,6 +1051,7 @@ def view_room():
         room_id=get_id(room_name['room_name'])
         room = get_room(room_id['_id'])
         room_members = get_room_members(room_id['_id'])
+        books = get_all_books()
         print(room_id)
         print(room_members)
         messages = get_messages(room_id)
@@ -1058,7 +1059,7 @@ def view_room():
         #book_name=book_id_to_name(book_id)
         songs ='' #os.listdir('./static/music/'+book_name[0])
         return render_template('view_room.html', username=session['username'], room=room, room_members=room_members,songs=songs,
-                                messages=messages)
+                                messages=messages, books=books)
 
     else:
         books = get_all_books()

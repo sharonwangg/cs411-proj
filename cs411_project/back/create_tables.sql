@@ -12,7 +12,8 @@ PRIMARY KEY(book_id)
 
 CREATE TABLE user(
 username varchar(10),
-PRIMARY KEY(username)
+PRIMARY KEY(username),
+FOREIGN KEY(username) REFERENCES login(username) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE login(
@@ -50,7 +51,7 @@ location varchar(100),
 book_id int,
 host1 varchar(10),
 PRIMARY KEY(event_id),
-FOREIGN KEY(host1) REFERENCES user(username),
+FOREIGN KEY(host1) REFERENCES user(username) ON DELETE SET NULL ON UPDATE CASCADE,
 FOREIGN KEY(book_id) REFERENCES books(book_id) ON DELETE CASCADE ON UPDATE CASCADE
 );	
 
@@ -69,6 +70,8 @@ CREATE TABLE club(
 username varchar(10),
 club_id int not null,
 is_admin BOOLEAN default 0,
+book_id int not null,
 PRIMARY KEY(username, club_id),
+FOREIGN KEY(book_id) REFERENCES books(book_id) ON DELETE SET NULL ON UPDATE CASCADE,
 FOREIGN KEY(username) REFERENCES user(username) ON DELETE CASCADE ON UPDATE CASCADE
 );
