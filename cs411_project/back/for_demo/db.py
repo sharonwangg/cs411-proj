@@ -11,24 +11,38 @@ users_collection = chat_db.get_collection("users")
 rooms_collection = chat_db.get_collection("rooms")
 room_members_collection = chat_db.get_collection("room_members")
 messages_collection = chat_db.get_collection("messages")
+audio_collection =chat_db.get_collection("book_audio_book")
 
+def get_all_room(username):
+    li =list(room_members_collection.find({'_id.username': username},{'room_name':1,'_id':0}))
+    return li[0]
+
+def delete_chat(room_id,room_name):
+    print(room_name)
+    rooms_collection.remove({'_id': ObjectId(room_id)})
+    room_members_collection.remove({'room_name':room_name})
+    messages_collection.remove({'room_id':room_id})
+
+
+
+def get_book_link(book_name):
+    return audio_collection.find_one({'book_name':book_name})
+
+
+def insert_audio(book,audio_book):
+    audio_id = audio_collection.insert_one(
+        {'book_name': book, 'audio_link': audio_book, 'created_at': datetime.now()}).inserted_id
 
 def get_id(name):
-    print(rooms_collection.find_one({'name': name},{'_id': 1}))
     return rooms_collection.find_one({'name': name},{'_id': 1})
 
 def save_user(username, email, password):
     users_collection.insert_one({'_id': username, 'email': email, 'password': password_hash})
 
 
-def get_user(username):
-    user_data = users_collection.find_one({'_id': username})
-    return User(user_data['_id'], user_data['email'], user_data['password']) if user_data else None
-
-
-def save_room(room_name, created_by):
+def save_room(room_name, created_by,book_name):
     room_id = rooms_collection.insert_one(
-        {'name': room_name, 'created_by': created_by, 'created_at': datetime.now()}).inserted_id
+        {'name': room_name, 'created_by': created_by, 'created_at': datetime.now(),'book_name':book_name}).inserted_id
     add_room_member(room_id, room_name, created_by, created_by, is_room_admin=True)
     return room_id
 
@@ -80,13 +94,10 @@ def save_message(room_id, text, sender):
     messages_collection.insert_one({'room_id': room_id, 'text': text, 'sender': sender, 'created_at': datetime.now()})
 
 
-MESSAGE_FETCH_LIMIT = 10
 
-
-def get_messages(room_id, page=0):
-    offset = page * MESSAGE_FETCH_LIMIT
+def get_messages(room_id):
     messages = list(
-        messages_collection.find({'room_id': room_id}).sort('_id', DESCENDING).limit(MESSAGE_FETCH_LIMIT).skip(offset))
+        messages_collection.find({'room_id': str(room_id)}).sort('created_at', DESCENDING))
     for message in messages:
         message['created_at'] = message['created_at'].strftime("%d %b, %H:%M")
     return messages[::-1]

@@ -13,9 +13,35 @@ import pymysql.cursors
 from datetime import datetime
 import numpy as np
 import math
-from basic_insert import create_user
+from db import save_room,add_room_members
 
 #Advanced funtion 1 - places users in book clubs based on their preferences for books existing in the database
+
+def create_user(username,password,email,age):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='m8y7b6v5',
+                                 db='book_club')
+
+    value=''
+
+    print(username)
+    try:
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO `user` (`username`) VALUES (%s)"
+            cursor.execute(sql, (username))
+            #password_hash= hashlib.md5(password).hexdigest()
+            sql = "INSERT INTO `login` (`username`,`password`,`email`,`age`) VALUES (%s,%s,%s,%s)"
+            value=cursor.execute(sql, (username,password,email,age))
+        connection.commit()
+    finally:
+        connection.close()
+        print(value)
+        return value
+
+
+
+
 
 def get_book_ids():
     connection = pymysql.connect(host='localhost',
@@ -217,6 +243,17 @@ def group_new_user(new_user, clubid):
     finally:
         connection.close()
 
+
+def assign_room(clusters):
+    for i in clusters.keys():
+        room_id=save_room(i, 'system',i)
+        add_room_members(room_id, i, clusters[i], 'system')
+    #save_room(room_name,created_by,book_name)
+    #room_id = save_room(room_name, session['username'],book_name)
+    #add_room_members(room_id, room_name, usernames, session['username'])
+
+
+
 usernames = get_usernames()
 username_to_id = get_username_to_id(usernames)
 book_id_to_new_book_id = get_book_id_to_new_book_id(get_book_ids())
@@ -224,6 +261,8 @@ preference_matrix = get_user_preferences(book_id_to_new_book_id, get_likes_data(
 ideal_group_size = 5
 clf = KMeans(n_clusters=int(len(usernames) / ideal_group_size), random_state=411).fit(preference_matrix)
 clusters = {i: np.where(clf.labels_ == i)[0] for i in range(clf.n_clusters)}
+
+
 
 while True:
     min_cluster, min_cluster_id = identify_min_cluster_outside_tol(clusters, ideal_group_size, 0)
@@ -240,12 +279,18 @@ for group_id, user_ids in clusters.items():
         usernames.append(list(username_to_id)[user_id])
     clusters[group_id] = usernames   
 
+#assign chat room:
+assign_room(clusters)
+config=open('config.txt','w+')
+config.write(str(clf)+'\n')
+config.write(str(clusters))
+config.close()
 #insert_clusters(clusters)
 
 #add new user
-create_user('sharonwang','swang123','swang@gmail.com','20')
-gid = get_group_id_of_new_user(clf, clusters, 'sharonwang', [375, 376], [388, 393], book_id_to_new_book_id)
-group_new_user('sharonwang',gid)
+#create_user('sharonwaFng','swang123','swang@gmail.com','20')
+#gid = get_group_id_of_new_user(clf, clusters, 'sharonwang', [375, 376], [388, 393], book_id_to_new_book_id)
+#group_new_user('sharonwang',gid)
 
 
 

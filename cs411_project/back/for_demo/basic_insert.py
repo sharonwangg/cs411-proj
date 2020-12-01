@@ -11,19 +11,49 @@ import json
 import hashlib
 import flask
 from flask import Flask, render_template, request,url_for, redirect,session
-from db import  save_room, add_room_members, get_rooms_for_user, get_room, is_room_member, \
-    get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages,get_id
+from db import  save_room, add_room_members, get_rooms_for_user, get_room, is_room_member,get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages,get_id,get_all_room,delete_chat
 import pymysql.cursors
 from datetime import datetime
+from flask_socketio import SocketIO, join_room, leave_room
+from datetime import datetime
+import os
+from audio import ready_audio
+from kmeans import get_group_id_of_new_user,get_book_id_to_new_book_id,clf,clusters,group_new_user
+
+from sklearn.cluster import KMeans
 
 app = Flask(__name__)
 
 app.secret_key = 'Team105'
+socketio = SocketIO(app)
+
+
+
+def in_like_table():
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='m8y7b6v5',
+                                 db='book_club')
+    returni=''
+    try:
+
+        with connection.cursor() as cur:
+
+
+            cur.execute('select username from Likes where username=%s', str(session['username']))
+            rows = cur.fetchone()
+            returni=rows[0]
+    finally:
+        connection.close()
+        return True if(returni==session['username']) else False
+
+
+
 
 def log_me_in(username,password):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -41,7 +71,7 @@ def log_me_in(username,password):
 def show_post():
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -61,7 +91,7 @@ def show_post():
 def get_posts(b_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -81,7 +111,7 @@ def get_posts(b_id):
 def create_user(username,password,email,age):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     value=''
@@ -107,7 +137,7 @@ def create_user(username,password,email,age):
 def create_post(username,text,date,book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -122,7 +152,7 @@ def create_post(username,text,date,book_id):
 def delete_record(value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     print('a')
 
@@ -141,7 +171,7 @@ def delete_record(value):
 def search_me(value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -163,7 +193,7 @@ def search_me(value):
 def search_g_posts(value,b_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -185,7 +215,7 @@ def search_g_posts(value,b_id):
 def search_book(value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -206,7 +236,7 @@ def search_book(value):
 def book_id_to_name(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -227,7 +257,7 @@ def book_id_to_name(book_id):
 def get_all_books():
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -247,7 +277,7 @@ def get_all_books():
 def max_book_id():
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -267,7 +297,7 @@ def max_book_id():
 def edit_helper(post_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -289,7 +319,7 @@ def edit_helper(post_id):
 def edit(post_id,value):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -304,7 +334,7 @@ def edit(post_id,value):
 def can_delete(id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=''
     try:
@@ -323,7 +353,7 @@ def can_delete(id):
 def show_user(username):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -341,7 +371,7 @@ def show_user(username):
 def start_reading(username, book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -356,7 +386,7 @@ def start_reading(username, book_id):
 def stop_reading(username, book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -370,7 +400,7 @@ def stop_reading(username, book_id):
 def stop_reading_check(username, book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -386,7 +416,7 @@ def stop_reading_check(username, book_id):
 def like_helper(user,bookid):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try:
@@ -401,11 +431,65 @@ def like_helper(user,bookid):
         else:
             return True
 
+def get_like_dislike(user,flag):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='m8y7b6v5',
+                                 db='book_club')
+    returni=[]
+    if flag=="Like":
+        try:
+            with connection.cursor() as cur:
+                cur.execute('SELECT book_id FROM `Likes` WHERE `likes_dislikes`=%s and username = %s', ('Likes',user))
+                rows = cur.fetchall()
+                returni=rows
+        finally:
+            connection.close()
+    else:
+        try:
+            with connection.cursor() as cur:
+                cur.execute('SELECT `book_id` FROM `Likes` WHERE `likes_dislikes`=%s and username = %s', ('Disike',user))
+                rows = cur.fetchall()
+                returni=rows
+        finally:
+            connection.close()
+
+
+    print(returni)
+    return returni
+
+
+
+def get_book_ids():
+    connection = pymysql.connect(host='localhost',
+                                user='root',
+                                password='m8y7b6v5',
+                                db='book_club')
+
+    # select book_ids from Books table
+    book_ids = []
+    try:
+        with connection.cursor() as cur:
+            sql = "SELECT book_id FROM `Books`"
+            cur.execute(sql)
+            book_ids = cur.fetchall()
+        connection.commit()
+    finally:
+        connection.close()
+
+    # fix tuple problem
+    fixed_book_ids = []
+    for book_id in book_ids:
+        fixed_book_ids.append(book_id[0])
+
+    return fixed_book_ids
+
 def like(user, bookid, like):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
+    print(user, bookid, like)
 
     try:
         with connection.cursor() as cur:
@@ -423,6 +507,8 @@ def like(user, bookid, like):
             elif like == 0:
                 if like_helper(user, bookid):
                     sql = "delete from `Likes` WHERE username = %s AND book_id = %s"
+                else:
+                    return
             cur.execute(sql, (user, bookid))
         connection.commit()
     finally:
@@ -432,7 +518,7 @@ def like(user, bookid, like):
 def add_event(date, e_name, e_desc, e_loc, book_id, host):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -446,7 +532,7 @@ def add_event(date, e_name, e_desc, e_loc, book_id, host):
 def search_events(value,b_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try: 
@@ -463,7 +549,7 @@ def search_events(value,b_id):
 def delete_event(ev_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -477,7 +563,7 @@ def delete_event(ev_id):
 def edit_helper_event(ev_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
     try: 
@@ -492,7 +578,7 @@ def edit_helper_event(ev_id):
 def edit_event(date, loc, ev_name, ev_desc, ev_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     try:
@@ -507,7 +593,7 @@ def edit_event(date, loc, ev_name, ev_desc, ev_id):
 def get_groups(username):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
@@ -524,7 +610,7 @@ def get_groups(username):
 def get_group(username):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
@@ -541,7 +627,7 @@ def get_group(username):
 def get_group_members(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
@@ -558,7 +644,7 @@ def get_group_members(book_id):
 def get_group_byid(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
     returni=[]
 
@@ -575,7 +661,7 @@ def get_group_byid(book_id):
 def show_events(book_id):
     connection = pymysql.connect(host='localhost',
                                  user='root',
-                                 password='cs411',
+                                 password='m8y7b6v5',
                                  db='book_club')
 
     returni=[]
@@ -803,14 +889,23 @@ def books():
             val.append(option)
         for i,book in enumerate(books):
             if(val[i] == '1'):
-                like(session['username'], book[2], like=1)
                 print("liked", book[2])
+                like(session['username'], book[2], like=1)
             elif(val[i] == '-1'):
-                like(session['username'], book[2], like= -1)
                 print("disliked" ,book[2])
+                like(session['username'], book[2], like= -1)
             elif(val[i] == '0'):
+                print("No Reaction",book[2])
                 like(session['username'], book[2], like= 0)
-        return render_template('books.html', books = books)
+
+
+        book_id_to_new_book_id = get_book_id_to_new_book_id(get_book_ids())
+        gid = get_group_id_of_new_user(clf, clusters, session['username'], get_like_dislike(session['username'],'Like'), get_like_dislike(session['username'],'DisLike'), book_id_to_new_book_id)
+        group_new_user(session['username'],gid)
+        room_id=get_id(gid)['_id']
+        add_room_members(room_id, gid, [session['username']], 'system')
+        room_members = get_room_members(room_id)
+        return render_template('view_room.html',room=gid,room_members=room_members)
     else:
         books = get_all_books()
         return render_template('books.html', books = books)
@@ -915,5 +1010,142 @@ def leave(g_id):
     return redirect(url_for('group_router'))
 
 
+
+
+
+'''
+@app.route('/create-room/', methods=['GET', 'POST'])
+def create_room():
+    message = 'Please Enter the room_name and memebers'
+    if request.method == 'POST':
+        room_name = request.form['room_name']
+        book_id=get_group(session['username'])[2]
+        group_id=get_group(session['username'])[1]
+        members = get_group_members(group_id)
+        members=[i[0] for i in members]
+        print(members)
+        book_name=book_id_to_name(book_id)
+
+        user_list=request.form['members'].split(',')
+        usernames = [username.strip() for username in user_list]
+        for i in usernames:
+            if i not in members:
+                return render_template('create_room.html', message='The member '+i +'is not in this group please add them')
+            if i==session['username']:
+                return render_template('create_room.html', message='Please add someone in the group other than yourself')
+
+        ready_audio(book_name[0])
+        room_id = save_room(room_name, session['username'],book_name)
+
+        add_room_members(room_id, room_name, usernames, session['username'])
+        return redirect(url_for('view_room', room_id=room_name))
+
+    return render_template('create_room.html', message=message)
+
+'''
+
+@app.route('/rooms')
+def view_room():
+    if(in_like_table()):    
+        room_name=get_all_room(session['username'])
+        print(room_name)
+        room_id=get_id(room_name['room_name'])
+        room = get_room(room_id['_id'])
+        room_members = get_room_members(room_id['_id'])
+        print(room_id)
+        print(room_members)
+        messages = get_messages(room_id)
+        #book_id=get_group(session['username'])[2]
+        #book_name=book_id_to_name(book_id)
+        songs ='' #os.listdir('./static/music/'+book_name[0])
+        return render_template('view_room.html', username=session['username'], room=room, room_members=room_members,songs=songs,
+                                messages=messages)
+
+    else:
+        books = get_all_books()
+        return render_template('books.html', books=books)
+
+
+
+
+@app.route('/rooms/<room_id>/edit', methods=['GET', 'POST'])
+def edit_room():
+    room_id=dict(get_id(room_id))['_id']
+    room = get_room(room_id)
+    if room and is_room_admin(room_id, session['username']):
+        existing_room_members = [member['_id']['username'] for member in get_room_members(room_id)]
+        room_members_str = ",".join(existing_room_members)
+        message = ''
+        if request.method == 'POST':
+            room_name = request.form.get('room_name')
+            room['name'] = room_name
+            update_room(room_id, room_name)
+
+            new_members = [username.strip() for username in request.form.get('members').split(',')]
+            members_to_add = list(set(new_members) - set(existing_room_members))
+            members_to_remove = list(set(existing_room_members) - set(new_members))
+            if len(members_to_add):
+                add_room_members(room_id, room_name, members_to_add, current_user.username)
+            if len(members_to_remove):
+                remove_room_members(room_id, members_to_remove)
+            message = 'Room edited successfully'
+            room_members_str = ",".join(new_members)
+        return render_template('edit_room.html', room=room, room_members_str=room_members_str, message=message)
+    else:
+        return "Room not found", 404
+
+
+@app.route('/rooms/<room_id>/delete')
+def delete_room(room_id):
+    room_id=dict(get_id(room_id))['_id']
+    room = get_room(room_id)
+    if room and is_room_admin(room_id, session['username']):
+        delete_chat(room_id,room)
+
+        return render_template('group.html')
+    else:
+        return "Room not found", 404
+
+
+@app.route('/rooms/<room_id>/messages/')
+def get_older_messages(room_id):
+    room_id=dict(get_id(room_id))['_id']
+    room = get_room(room_id)
+    if room and is_room_member(room_id, session['username']):
+        messages = get_messages(room_id)
+        book_id=get_group(session['username'])[2]
+        book_name=book_id_to_name(book_id)
+        songs = os.listdir('./static/music/'+book_name[0])
+        return render_template('view_room.html', username=session['username'], room=room,songs=songs,paths='./static/music/'+book_name[0],
+                               messages=messages)
+    else:
+        return "Room not found", 404
+
+@socketio.on('send_message')
+def handle_send_message_event(data):
+    app.logger.info("{} has sent message to the room {}: {}".format(data['username'],
+                                                                    data['room'],
+                                                                    data['message']))
+    data['created_at'] = datetime.now().strftime("%d %b, %H:%M")
+    save_message(data['room'], data['message'], data['username'])
+    socketio.emit('receive_message', data, room=data['room'])
+
+
+@socketio.on('join_room')
+def handle_join_room_event(data):
+    app.logger.info("{} has joined the room {}".format(data['username'], data['room']))
+    join_room(data['room'])
+    socketio.emit('join_room_announcement', data, room=data['room'])
+
+
+@socketio.on('leave_room')
+def handle_leave_room_event(data):
+    app.logger.info("{} has left the room {}".format(data['username'], data['room']))
+    leave_room(data['room'])
+    socketio.emit('leave_room_announcement', data, room=data['room'])
+
+
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app, debug=True)
