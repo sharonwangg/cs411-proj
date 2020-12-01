@@ -75,6 +75,7 @@
                     <th>Event Name</th>
                     <th>Description</th>
                     <th>Location</th>
+                    <th>Host</th>
                 </tr>
                 {% for task in tasks %}
                     <tr>
@@ -82,6 +83,7 @@
                         <td>{{ task[2] }}</td>
                         <td>{{ task[3] }}</td>
                         <td>{{ task[4] }}</td>
+                        <td>{{ task[6] }}</td>
                             <td>
                                 <a href="/delete_event/{{group_id}}/{{task[0]}}">Delete</a>
                                 <br>
