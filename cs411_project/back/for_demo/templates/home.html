@@ -6,7 +6,7 @@
 
 {% extends 'layout.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}ReadIt: Virtual Book Club{% endblock %}
 
 {% block content %}
 <h2>Home Page</h2>
@@ -64,7 +64,7 @@
         </table>
 
         <br>
-            <form method="post" action="/search_event/{{group_id}}" 
+            <form method="post" action="/search_event" 
             >
                 <input type="text" placeholder="Search Events" name="event">
                 <button type="submit"><i class="fa fa-search"></i>

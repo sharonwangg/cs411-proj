@@ -179,7 +179,7 @@ def search_me(value):
         with connection.cursor() as cur:
 
 
-            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b where p.text1 like %s or p.username like %s or b.book_title like %s or b.author like %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%", "%" + value + "%"))
+            cur.execute('SELECT p.username, p.text1,p.dateTime,p.post_id, b.book_title FROM post p NATURAL JOIN books b WHERE p.text1 LIKE %s OR p.username LIKE %s OR b.book_title LIKE %s OR b.author LIKE %s ORDER BY dateTime DESC', ("%" + value + "%","%" + value + "%", "%" + value + "%", "%" + value + "%"))
             rows = cur.fetchall()
             returni=rows
 
@@ -201,7 +201,7 @@ def search_g_posts(value,b_id):
         with connection.cursor() as cur:
 
 
-            cur.execute('Select p.username, p.text1,p.dateTime,p.post_id, b.book_title from post p natural join books b where (p.text1 like %s or p.username like %s or b.book_title like %s or b.author like %s) and b.book_id = %s order by dateTime desc', ("%" + value + "%","%" + value + "%", "%" + value + "%", "%" + value + "%", b_id))
+            cur.execute('SELECT p.username, p.text1,p.dateTime,p.post_id, b.book_title FROM post p NATURAL JOIN books b WHERE (p.text1 LIKE %s OR p.username LIKE %s OR b.book_title LIKE %s OR b.author like %s) AND b.book_id = %s ORDER BY dateTime DESC', ("%" + value + "%","%" + value + "%", "%" + value + "%", "%" + value + "%", b_id))
             rows = cur.fetchall()
             returni=rows
 
@@ -457,6 +457,21 @@ def get_like_dislike(user,flag):
 
     print(returni)
     return returni
+
+def get_likes(usr):
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='m8y7b6v5',
+                                 db='book_club')
+    returni=[]
+    try:
+        with connection.cursor() as cur:
+            cur.execute('SELECT b.book_title, l.likes_dislikes FROM Likes l NATURAL JOIN books b WHERE username = %s',usr)
+            rows = cur.fetchall()
+            returni = rows
+    finally:
+        connection.close
+        return returni 
 
 
 
@@ -740,11 +755,13 @@ def login():
             session['id'] = 1
             session['username'] = account[0]
             values = []
+            events = []
             usr = session['username']
             groups = get_groups(usr)
             for group in groups :
                 values += get_posts(group[0])
-            return render_template('home.html',tasks=values, usr = session['username'])
+                events += show_events(group[0])
+            return render_template('home.html',tasks=values, usr = session['username'],events=events)
         else:
             msg = 'Incorrect username/password!'
     return render_template('login.html', msg=msg)
@@ -796,8 +813,19 @@ def home():
 @app.route('/profile')
 def profile():
     if 'loggedin' in session:
+        liked_b = []
+        disliked_b = []
+        likes = get_likes(session['username'])
+        print(likes)
+        for like in likes:
+            if like[1] == 'Like':
+                liked_b.append(like[0])
+            elif like[1] == 'Dislike' or like[1] == 'Disike':
+                disliked_b.append(like[0])
+        print(liked_b)
+        print(disliked_b)
         account=show_user(session['username'])
-        return render_template('profile.html', account=account)
+        return render_template('profile.html', account=account, dislikes = disliked_b, likes = liked_b)
     return redirect(url_for('login'))
 
 
@@ -805,13 +833,32 @@ def profile():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == "POST":
-        value = request.form['books']
-        returns=search_me(value)
-        if value == "" or len(returns) == 0:
-            return render_template('home.html', usr = session['username'], msg='No records for "' + value + '"')
+        value1 = request.form.get('book',False)
+        groups = get_groups(session['username'])
+        returns1 = []
+        returns2 = []
+        for group in groups:
+            returns1 += search_g_posts(value1,group[0])
+            returns2 += show_events(group[0])
+        if value1 == "" or len(returns1) == 0:
+            return render_template('home.html', usr = session['username'], msg='No records found for search',events = returns2)
         else:
-            return render_template('home.html',msg='Records returned by search for "' + value + '"',tasks=returns, usr = session['username'])
+            return render_template('home.html',msg='Records returned by search: ',tasks=returns1, usr = session['username'],events=returns2)
 
+@app.route('/search_event',methods=['GET','POST'])
+def search_evs():
+    if request.method == "POST":
+        value2 = request.form.get('event',False)
+        groups = get_groups(session['username'])
+        returns1 = []
+        returns2 = []
+        for group in groups:
+            returns1 += get_posts(group[0])
+            returns2 += search_events(value2,group[0])
+        if value2 == "":
+            return render_template('home.html',msg = 'No records found for search', tasks = returns1)
+        else:
+            return render_template('home.html',tasks = returns1, usr = session['username'], events=returns2)
 
 @app.route('/search_group_posts/<int:g_id>', methods=['GET', 'POST'])
 def search_group_posts(g_id):
@@ -842,11 +889,12 @@ def post_group_posts(g_id):
     posts = get_posts(g_id)
     if request.method == 'POST':
         task_content = request.form['content']
-        book_content = request.form['book1']
+        #book_content = request.form['book1']
         posts = get_posts(g_id)
-        if task_content == "" or book_content == "":
-            return render_template('group.html', usr = usr, group_id = g_id, book = book[0], author = book[1], posts = posts, tasks = events, members = members, pmsg='Post could not be added, please enter Post text and Book title')
-        book_ins = search_book(book_content)
+        if task_content == "":
+            return render_template('group.html', usr = usr, group_id = g_id, book = book[0], author = book[1], posts = posts, tasks = events, members = members, pmsg='Post could not be added, please enter Post text')
+        #book_ins = search_book(book_content)
+        book_ins = book_id
         try:
             print(datetime.now())
             create_post(session['username'],task_content,datetime.now(),book_ins)
@@ -904,7 +952,7 @@ def books():
         room_id=get_id(gid)['_id']
         add_room_members(room_id, gid, [session['username']], 'system')
         room_members = get_room_members(room_id)
-        messages = get_messages(room_id['_id'])
+        messages = get_messages(room_id)
         books = get_all_books()
         return render_template('view_room.html',username=session['username'],room=gid,room_members=room_members,books=books,messages=messages)
     else:

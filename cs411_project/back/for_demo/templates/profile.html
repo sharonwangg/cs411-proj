@@ -19,6 +19,22 @@
             <td>Age:</td>
             <td>{{ account[2] }}</td>
         </tr>
+        <tr>
+                <td>Likes:</td>
+                <td>
+                {% for like in likes %}
+                    {{ like }} <br>
+                {% endfor %}
+             </td>
+        </tr>
+        <tr>
+            <td>Dislikes:</td>
+            <td>
+            {% for dislike in dislikes %}
+                {{ dislike }} <br>
+            {% endfor %}
+         </td>
+    </tr>
     </table>
 </div>
 {% endblock %}

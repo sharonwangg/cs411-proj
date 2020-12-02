@@ -1,3 +1,8 @@
+#chat implemented using reference videos: 
+#https://youtu.be/pvUUidK1zuw
+#https://youtu.be/uJC8A_7VZOA
+
+
 from datetime import datetime
 
 from bson import ObjectId
