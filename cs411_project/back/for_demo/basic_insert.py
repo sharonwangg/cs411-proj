@@ -805,7 +805,7 @@ def profile():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == "POST":
-        value = request.form['book']
+        value = request.form['books']
         returns=search_me(value)
         if value == "" or len(returns) == 0:
             return render_template('home.html', usr = session['username'], msg='No records for "' + value + '"')
@@ -1054,7 +1054,7 @@ def view_room():
         books = get_all_books()
         print(room_id)
         print(room_members)
-        messages = get_messages(room_id)
+        messages = get_messages(room_id['_id'])
         #book_id=get_group(session['username'])[2]
         #book_name=book_id_to_name(book_id)
         songs ='' #os.listdir('./static/music/'+book_name[0])
@@ -1066,60 +1066,40 @@ def view_room():
         return render_template('books.html', books=books)
 
 
-
-
-@app.route('/rooms/<room_id>/edit', methods=['GET', 'POST'])
-def edit_room():
-    room_id=dict(get_id(room_id))['_id']
-    room = get_room(room_id)
-    if room and is_room_admin(room_id, session['username']):
-        existing_room_members = [member['_id']['username'] for member in get_room_members(room_id)]
-        room_members_str = ",".join(existing_room_members)
-        message = ''
-        if request.method == 'POST':
-            room_name = request.form.get('room_name')
-            room['name'] = room_name
-            update_room(room_id, room_name)
-
-            new_members = [username.strip() for username in request.form.get('members').split(',')]
-            members_to_add = list(set(new_members) - set(existing_room_members))
-            members_to_remove = list(set(existing_room_members) - set(new_members))
-            if len(members_to_add):
-                add_room_members(room_id, room_name, members_to_add, current_user.username)
-            if len(members_to_remove):
-                remove_room_members(room_id, members_to_remove)
-            message = 'Room edited successfully'
-            room_members_str = ",".join(new_members)
-        return render_template('edit_room.html', room=room, room_members_str=room_members_str, message=message)
+@app.route('/audio/books',methods=['POST', 'GET'])
+def audio_book():
+    if request.method == 'POST':
+        book_name=request.form.get('books',None)
+        room_name=get_all_room(session['username'])
+        print(room_name)
+        room_id=get_id(room_name['room_name'])
+        room = get_room(room_id['_id'])
+        room_members = get_room_members(room_id['_id'])
+        books = get_all_books()
+        print(room_id)
+        print(room_members)
+        messages = get_messages(room_id['_id'])
+        ready_audio(book_name)
+        songs =os.listdir('./static/music/'+book_name)
+        return render_template('view_room.html', username=session['username'], room=room, room_members=room_members,songs=songs,
+                                    messages=messages, books=books)
     else:
-        return "Room not found", 404
+        room_name=get_all_room(session['username'])
+        print(room_name)
+        room_id=get_id(room_name['room_name'])
+        room = get_room(room_id['_id'])
+        room_members = get_room_members(room_id['_id'])
+        books = get_all_books()
+        print(room_id)
+        print(room_members)
+        messages = get_messages(room_id['_id'])
+        #book_id=get_group(session['username'])[2]
+        #book_name=book_id_to_name(book_id)
+        songs ='' #os.listdir('./static/music/'+book_name[0])
+        return render_template('view_room.html', username=session['username'], room=room, room_members=room_members,songs=songs,
+                                    messages=messages, books=books)
 
 
-@app.route('/rooms/<room_id>/delete')
-def delete_room(room_id):
-    room_id=dict(get_id(room_id))['_id']
-    room = get_room(room_id)
-    if room and is_room_admin(room_id, session['username']):
-        delete_chat(room_id,room)
-
-        return render_template('group.html')
-    else:
-        return "Room not found", 404
-
-
-@app.route('/rooms/<room_id>/messages/')
-def get_older_messages(room_id):
-    room_id=dict(get_id(room_id))['_id']
-    room = get_room(room_id)
-    if room and is_room_member(room_id, session['username']):
-        messages = get_messages(room_id)
-        book_id=get_group(session['username'])[2]
-        book_name=book_id_to_name(book_id)
-        songs = os.listdir('./static/music/'+book_name[0])
-        return render_template('view_room.html', username=session['username'], room=room,songs=songs,paths='./static/music/'+book_name[0],
-                               messages=messages)
-    else:
-        return "Room not found", 404
 
 @socketio.on('send_message')
 def handle_send_message_event(data):

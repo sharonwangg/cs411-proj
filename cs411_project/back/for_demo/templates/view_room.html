@@ -7,8 +7,7 @@
 <body>
 <h1>Welcome to chat room: {{ room.name }}</h1>
 
-
-<button type="button" id="load_older_messages_btn">Load Older Messages</button>
+<h2>Messages</h2>
 <div id="messages">
     {% for message in messages %}
         <div><b>{{ message.sender }}&nbsp;[{{ message.created_at }}]:&nbsp;</b> {{ message.text }}</div>
@@ -19,12 +18,11 @@
     <input type="text" id="message_input" placeholder="Enter your message here">
     <button type="submit">Send</button>
 </form>
-
-<form id="book_selection">
     <label for="books">Choose a book to read with your book club:</label>
-    <select id="books" name ="books">
+<form method="post" action="/audio/books">
+    <select id="book" name ="books">
         {% for book in books %}
-            <option value= "{{ book[3] }}">{{ book[0] }} (by {{ book[1] }})</option>
+            <option value= "{{ book[0] }}">{{ book[0] }} (by {{ book[1] }})</option>
         {% endfor %}
     </select>
     <input type="submit" value="Submit">
@@ -94,21 +92,6 @@
         }
     });
 
-    let page = 0;
-
-    document.getElementById("load_older_messages_btn").onclick = (e) => {
-        page += 1;
-        fetch("/rooms/{{ room._id }}/messages?page=" + page, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => {
-            response.json().then(messages => {
-                messages.reverse().forEach(message => prepend_message(message.text, message.sender, message.created_at));
-            })
-        })
-    };
 
     function prepend_message(message, username, created_at) {
         const newNode = document.createElement('div');
