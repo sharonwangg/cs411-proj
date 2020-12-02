@@ -904,7 +904,9 @@ def books():
         room_id=get_id(gid)['_id']
         add_room_members(room_id, gid, [session['username']], 'system')
         room_members = get_room_members(room_id)
-        return render_template('view_room.html',room=gid,room_members=room_members)
+        messages = get_messages(room_id['_id'])
+        books = get_all_books()
+        return render_template('view_room.html',username=session['username'],room=gid,room_members=room_members,books=books,messages=messages)
     else:
         books = get_all_books()
         return render_template('books.html', books = books)

@@ -70,7 +70,6 @@ CREATE TABLE club(
 username varchar(10),
 club_id int not null,
 is_admin BOOLEAN default 0,
-book_id int not null,
 PRIMARY KEY(username, club_id),
 FOREIGN KEY(book_id) REFERENCES books(book_id) ON DELETE SET NULL ON UPDATE CASCADE,
 FOREIGN KEY(username) REFERENCES user(username) ON DELETE CASCADE ON UPDATE CASCADE

@@ -237,36 +237,8 @@ def group_new_user(new_user, clubid):
                                 db='book_club')
     try:
         with connection.cursor() as cur:
-            sql = "INSERT INTO `club` (`username`, `club_id`, `book_id`) VALUES (%s, %s, SELECT book_id FROM `club` WHERE club_id = %s)"
-            cur.execute(sql, (new_user, clubid, clubid))
-        connection.commit()
-    finally:
-        connection.close()
-
-def get_club_book(c_id):
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='m8y7b6v5',
-                                 db='book_club')
-    book = ""
-    try:
-        with connection.cursor() as cur:
-            cur.execute("SELECT book_id FROM `club` WHERE club_id = %s",c_id)
-            book = cur.fetchone()
-        connection.commit()
-    finally:
-        connection.close()
-        return book
-
-def set_book(user,c_id,b_id):
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='m8y7b6v5',
-                                 db='book_club')
-    try:
-        with connection.cursor() as cur:
-            sql = "UPDATE `club` SET book_id = %s WHERE c_id = %s"
-            cur.execute(sql,(b_id,c_id))
+            sql = "INSERT INTO `club` (`username`, `club_id`) VALUES (%s, %s)"
+            cur.execute(sql, (new_user, clubid))
         connection.commit()
     finally:
         connection.close()
