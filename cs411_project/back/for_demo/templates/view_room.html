@@ -18,6 +18,9 @@
     <input type="text" id="message_input" placeholder="Enter your message here">
     <button type="submit">Send</button>
 </form>
+
+<br>
+<br>
     <label for="books">Choose a book to read with your book club:</label>
 <form method="post" action="/audio/books">
     <select id="book" name ="books">
@@ -27,7 +30,16 @@
     </select>
     <input type="submit" value="Submit">
 </form>
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<form method="post" action="/">
+<button type="submit">Back to main page</button>
+</form>
+ 
 <h3>Members</h3>
 <ul>
     {% for member in room_members %}
