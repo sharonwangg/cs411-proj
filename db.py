@@ -9,7 +9,7 @@ from bson import ObjectId
 from pymongo import MongoClient, DESCENDING
 
 
-client = MongoClient("mongodb+srv://admin:admin@cluster0.1cjsr.mongodb.net/chat?retryWrites=true&w=majority")
+client = MongoClient("url")
 
 chat_db = client.get_database("ChatDB")
 users_collection = chat_db.get_collection("users")
