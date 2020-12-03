@@ -1,0 +1,2 @@
+KMeans(n_clusters=5, random_state=411)
+{0: ['rchellani', 'asriram', 'Hem', 'kkhimani', 'sgurtata'], 1: ['agrudzin', 'amendoza', 'awang', 'igruters', 'sdhugana'], 2: ['czhou', 'mphillips', 'nchellani', 'rstevens', 'scoheleach', 'sqian'], 3: ['abrown', 'vrathnam', 'batman123', 'jreger', 'sbhandari'], 4: ['bfache', 'eanderson', 'jflores', 'jmcdonald', 'naryal', 'sbhushan']}

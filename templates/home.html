@@ -1,0 +1,78 @@
+<!-- 
+    Templates written using the following tutorials:
+    https://www.codementor.io/@garethdwyer/building-a-crud-application-with-flask-and-sqlalchemy-dm3wv7yu2 
+    and https://realpython.com/introduction-to-flask-part-1-setting-up-a-static-site/
+-->
+
+{% extends 'layout.html' %}
+
+{% block title %}ReadIt: Virtual Book Club{% endblock %}
+
+{% block content %}
+<h2>Home Page</h2>
+<p>Welcome back, {{ usr }}!</p>
+<body>
+<div class="content">
+
+    <h4>Forum Posts</h4>
+    {% if msg != null %}
+        <p>{{ msg }}</p>
+    {% endif %}
+
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Post</th>
+                <th>Date Posted</th>
+                <th>Book Title</th>
+            </tr>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task[0] }}</td>
+                    <td>{{ task[1] }}</td>
+                    <td>{{ task[2] }}</td>
+                    <td>{{ task[4] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+         <br>
+         <form method="post" action="/search" 
+         >
+           <input type="text" placeholder="Search Posts" name="book">
+           <button type="submit"><i class="fa fa-search"></i>
+           </button>
+       </form>
+       <br>
+       <br>
+
+       <h3>Events</h3>
+       <table>
+        <tr>
+            <th>Date</th>
+            <th>Event Name</th>
+            <th>Description</th>
+            <th>Location</th>
+        </tr>
+        {% for event in events %}
+            <tr>
+                <td>{{ event[1] }}</td>
+                <td>{{ event[2] }}</td>
+                <td>{{ event[3] }}</td>
+                <td>{{ event[4] }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+
+        <br>
+            <form method="post" action="/search_event" 
+            >
+                <input type="text" placeholder="Search Events" name="event">
+                <button type="submit"><i class="fa fa-search"></i>
+                </button>
+            </form>
+</div>
+
+
+        
+    </body>
+{% endblock %}
